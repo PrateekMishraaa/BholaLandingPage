@@ -2,6 +2,7 @@ import React from 'react';
 import { Check, CheckCheck } from 'lucide-react';
 import FirstImag from "./assets/FirstImage.jpeg"
 import SecondImag from "./assets/SecondImage.jpeg"
+import Doctor from "./assets/doctorimage.jpg"
 export default function LibidexLandingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -39,7 +40,7 @@ export default function LibidexLandingPage() {
                 <span className="text-blue-900 font-bold text-xs">BAYER</span>
               </div>
               <img 
-                src={FirstImag} 
+                src={Doctor} 
                 alt="Dr Rajinder Singh Yadav" 
                 className="w-full rounded-lg shadow-lg"
               />
@@ -91,15 +92,22 @@ export default function LibidexLandingPage() {
               </div>
 
               {/* Product Image */}
-              <div className="bg-white p-6 rounded-lg shadow text-center">
-                <div className="bg-gray-200 h-32 rounded-lg mb-3 flex items-center justify-center">
-                  <div className="text-gray-500">Libidex Product Image</div>
-                </div>
-                <p className="font-bold text-lg mb-2">Libidex</p>
-                <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full w-full">
-                  अभी में प्राप्त करें 2490 INR!
-                </button>
-              </div>
+            <div className="bg-white p-6 rounded-lg shadow text-center">
+  <div className="bg-gray-200 h-44 rounded-lg mb-3 overflow-hidden">
+    <img
+      src={SecondImag}
+      alt="Libidex"
+      className="w-full h-full object-contain"
+    />
+  </div>
+
+  <p className="font-bold text-lg mb-2">Libidex</p>
+
+  <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full w-full">
+    अभी प्राप्त करें ₹2490
+  </button>
+</div>
+
             </div>
           </div>
         </div>
@@ -132,22 +140,42 @@ export default function LibidexLandingPage() {
             </div>
 
             {/* Diagram Section */}
-            <div className="bg-gray-100 p-6 rounded-lg">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white p-4 rounded">
-                  <h4 className="font-bold mb-2">मुख्यावस्था (IPP) से एंड्राशिवि ग्रत्नया</h4>
-                  <div className="bg-gray-200 h-48 rounded flex items-center justify-center">
-                    <span className="text-gray-500">Diagram 1</span>
-                  </div>
-                </div>
-                <div className="bg-white p-4 rounded">
-                  <h4 className="font-bold mb-2">प्रत्याप्तीयन क्रैयर की ओर होथम</h4>
-                  <div className="bg-gray-200 h-48 rounded flex items-center justify-center">
-                    <span className="text-gray-500">Diagram 2</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+         <div className="bg-gray-100 p-6 rounded-lg">
+  <div className="grid md:grid-cols-2 gap-6">
+
+    {/* Diagram 1 */}
+    <div className="bg-white p-4 rounded">
+      <h4 className="font-bold mb-2">
+        मुख्यावस्था (IPP) से एंड्राशिवि ग्रत्नया
+      </h4>
+
+      <div className="bg-gray-200 h-48 rounded overflow-hidden">
+        <img
+          src={FirstImag}
+          alt="Diagram 1"
+          className="w-full h-full object-contain"
+        />
+      </div>
+    </div>
+
+    {/* Diagram 2 */}
+    <div className="bg-white p-4 rounded">
+      <h4 className="font-bold mb-2">
+        प्रत्याप्तीयन क्रैयर की ओर होथम
+      </h4>
+
+      <div className="bg-gray-200 h-48 rounded overflow-hidden">
+        <img
+          src={SecondImag}
+          alt="Diagram 2"
+          className="w-full h-full object-contain"
+        />
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
             <p className="font-bold text-lg mt-8">
               लिबिदेक्स नहीं। मुझे इन पुरुषों ने यह इंट्रोडन्टैनिका में ध्यान डूकारे का आह्वान किया, और पहली बार मैने उनसे एक अद्वितिय उत्पाद को बारे में सुना। Libidex
@@ -383,13 +411,19 @@ export default function LibidexLandingPage() {
             </div>
 
             <div className="text-center">
-              <div className="bg-gray-200 h-32 rounded-lg mb-4 flex items-center justify-center">
-                <div className="text-gray-500">Libidex Product</div>
-              </div>
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-lg w-full md:w-auto">
-                अभी ऑर्डर करें 2490 INR में!
-              </button>
-            </div>
+  <div className="bg-gray-200 h-40 rounded-lg mb-4 overflow-hidden">
+    <img
+      src={SecondImag}
+      alt="Libidex Product"
+      className="w-full h-full object-contain"
+    />
+  </div>
+
+  <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-lg w-full md:w-auto">
+    अभी ऑर्डर करें ₹2490 में!
+  </button>
+</div>
+
           </div>
         </div>
       </section>
@@ -447,72 +481,106 @@ export default function LibidexLandingPage() {
       </section>
 
       {/* Certifications */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="bg-blue-50 p-6 rounded-lg mb-8">
-            <p className="text-gray-700 mb-4">
-              <span className="font-bold text-blue-600">Libidex</span> एक पिग्तलार्ड पिपुलर है और इस द्वि प्रयोगल्योग स्तार सामर्पैट है, जिससे प्रोस्टेटाइटिस के निभाशी उपयोग की कोड करने वाले पीर्भूलेओं को शांति मिलती है।
-            </p>
+  <section className="py-12 bg-white">
+  <div className="container mx-auto px-4 max-w-4xl">
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white p-4 rounded-lg shadow">
-                <div className="h-48 bg-gray-200 rounded mb-3 flex items-center justify-center">
-                  <span className="text-gray-500">CE Certificate</span>
-                </div>
-                <p className="text-center text-sm text-gray-600">European Certification</p>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow">
-                <div className="h-48 bg-gray-200 rounded mb-3 flex items-center justify-center">
-                  <span className="text-gray-500">Certificado</span>
-                </div>
-                <p className="text-center text-sm text-gray-600">Quality Certification</p>
-              </div>
-            </div>
-          </div>
+    <div className="bg-blue-50 p-6 rounded-lg mb-8">
+      <p className="text-gray-700 mb-4">
+        <span className="font-bold text-blue-600">Libidex</span>{" "}
+        एक पिग्तलार्ड पिपुलर है और इस द्वि प्रयोगल्योग स्तार सामर्पैट है,
+        जिससे प्रोस्टेटाइटिस के निभाशी उपयोग की कोड करने वाले पीर्भूलेओं
+        को शांति मिलती है।
+      </p>
 
-          <div className="bg-gray-50 p-6 rounded-lg">
-            <p className="text-gray-700">
-              <span className="font-bold text-blue-600">Libidex</span> मान करता है। लेकिन, प्रिंयता के निर्विश्ट, केम्सुल कुंरीर के लिए पूरी तरह से हुर्सुनें है और न केवल एक तात्कालिक प्रभाव प्रदान करता है, बल्कि दीर्घकालित समय के लिए पीन भे शा वैज्ञानिक प्रभाव भी प्रदान करता है। (उजचारा)।
-            </p>
+      <div className="grid md:grid-cols-2 gap-6">
+
+        {/* Certificate 1 */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
+            <img
+              src={Doctor}
+              alt="CE Certificate"
+              className="w-full h-full object-contain"
+            />
           </div>
+          <p className="text-center text-sm text-gray-600">
+            European Certification
+          </p>
         </div>
-      </section>
+
+        {/* Certificate 2 */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
+            <img
+              src={Doctor}
+              alt="Quality Certificate"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <p className="text-center text-sm text-gray-600">
+            Quality Certification
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div className="bg-gray-50 p-6 rounded-lg">
+      <p className="text-gray-700">
+        <span className="font-bold text-blue-600">Libidex</span>{" "}
+        मान करता है। लेकिन, प्रिंयता के निर्विश्ट, केम्सुल कुंरीर के लिए
+        पूरी तरह से हुर्सुनें है और न केवल एक तात्कालिक प्रभाव प्रदान करता
+        है, बल्कि दीर्घकालित समय के लिए भी वैज्ञानिक प्रभाव प्रदान करता है।
+      </p>
+    </div>
+
+  </div>
+</section>
+
 
       {/* Final CTA */}
-      <section className="py-16 bg-gradient-to-b from-orange-100 to-orange-200">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            अभी ऑर्डर करें और 50% की छूट पाएं!
-          </h2>
-          
-          <div className="bg-white p-8 rounded-lg shadow-2xl max-w-md mx-auto">
-            <div className="bg-gray-200 h-40 rounded-lg mb-6 flex items-center justify-center">
-              <div className="text-gray-500">Libidex Product Package</div>
-            </div>
-            
-            <p className="text-2xl font-bold text-gray-900 mb-2">विशेष मूल्य</p>
-            <div className="mb-6">
-              <span className="text-4xl font-bold text-orange-600">₹2490</span>
-              <span className="text-xl text-gray-500 line-through ml-3">₹4980</span>
-            </div>
-            
-            <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-xl w-full transform transition hover:scale-105">
-              अभी ऑर्डर करें!
-            </button>
-            
-            <p className="text-sm text-gray-600 mt-4">
-              ⏰ ऑफर 31.12.2025 तक वैध है
-            </p>
-          </div>
+   <section className="py-16 bg-gradient-to-b from-orange-100 to-orange-200">
+  <div className="container mx-auto px-4 max-w-4xl text-center">
+    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+      अभी ऑर्डर करें और 50% की छूट पाएं!
+    </h2>
 
-          <div className="mt-8 text-gray-700">
-            <p className="mb-2">✓ 100% प्राकृतिक सामग्री</p>
-            <p className="mb-2">✓ कोई दुष्प्रभाव नहीं</p>
-            <p className="mb-2">✓ प्रमाणित और परीक्षित</p>
-            <p>✓ हजारों संतुष्ट ग्राहक</p>
-          </div>
-        </div>
-      </section>
+    <div className="bg-white p-8 rounded-lg shadow-2xl max-w-md mx-auto">
+
+      {/* IMAGE FIXED HERE */}
+      <div className="bg-gray-200 h-44 rounded-lg mb-6 overflow-hidden">
+        <img
+          src={FirstImag}
+          alt="Libidex Product"
+          className="w-full h-full object-contain"
+        />
+      </div>
+
+      <p className="text-2xl font-bold text-gray-900 mb-2">विशेष मूल्य</p>
+
+      <div className="mb-6">
+        <span className="text-4xl font-bold text-orange-600">₹2490</span>
+        <span className="text-xl text-gray-500 line-through ml-3">₹4980</span>
+      </div>
+
+      <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-xl w-full transform transition hover:scale-105">
+        अभी ऑर्डर करें!
+      </button>
+
+      <p className="text-sm text-gray-600 mt-4">
+        ⏰ ऑफर 31.12.2025 तक वैध है
+      </p>
+    </div>
+
+    <div className="mt-8 text-gray-700">
+      <p className="mb-2">✓ 100% प्राकृतिक सामग्री</p>
+      <p className="mb-2">✓ कोई दुष्प्रभाव नहीं</p>
+      <p className="mb-2">✓ प्रमाणित और परीक्षित</p>
+      <p>✓ हजारों संतुष्ट ग्राहक</p>
+    </div>
+  </div>
+</section>
+
 
       {/* Footer */}
       <footer className="bg-blue-900 text-white py-8">
