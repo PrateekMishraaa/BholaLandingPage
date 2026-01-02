@@ -5,7 +5,7 @@ import SecondImag from "./assets/SecondImage.jpeg"
 import Doctor from "./assets/doctorimage.jpg"
 import Graph from "./assets/graph.jpg"
 import DocterThird from "./assets/docter3.jpeg"
-import ProductImage from "./assets/productimg2.jpeg"
+import ProductImage from "./assets/testa.png"
 import Cerficate from "./assets/certificate.jpeg"
 
 export default function LibidexLandingPage() {
@@ -563,7 +563,7 @@ export default function LibidexLandingPage() {
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
             <img
-              src={Cerficate}
+              src={ProductImage}
               alt="CE Certificate"
               className="w-full h-full object-contain"
             />
