@@ -30,9 +30,19 @@ export default function LibidexLandingPage() {
               "एक किफायती उत्पाद तैयरी से प्रोस्टेट की सूजन को कम करेगा और 75 साल"
             </h1>
             <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 inline-block">
-              <p className="text-sm md:text-base">
-                की उम्र में भी एक स्वस्थ शक्ति बनाए रखेगा।" विशेष रूप से पुरुषों के लिए, सबसे मजबूत प्राकृतिक उपचार केवल <span className="font-bold text-red-600">2490 INR!</span> में अंतिम 31.12.2025 तक मान्य है!
-              </p>
+             <p className="text-sm md:text-base">
+  की उम्र में भी एक स्वस्थ शक्ति बनाए रखेगा। विशेष रूप से पुरुषों के लिए,
+  सबसे मजबूत प्राकृतिक उपचार केवल{" "}
+  <span className="font-bold text-red-600">2490 INR!</span>{" "}
+  में अंतिम{" "}
+  {new Date().toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  })}{" "}
+  तक मान्य है!
+</p>
+
             </div>
             <p className="text-gray-700">प्रोस्टेटाइटिस नपुंसकता, प्रोस्टेट कैंसर, बांझपन का कारण है!</p>
           </div>
@@ -572,7 +582,11 @@ export default function LibidexLandingPage() {
       </button>
 
       <p className="text-sm text-gray-600 mt-4">
-        ⏰ ऑफर 31.12.2025 तक वैध है
+        ⏰ ऑफर  {new Date().toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  })}{" "} तक वैध है
       </p>
     </div>
 
