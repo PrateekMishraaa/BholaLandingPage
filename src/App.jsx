@@ -7,9 +7,51 @@ import Graph from "./assets/graph.jpg"
 import DocterThird from "./assets/docter3.jpeg"
 import ProductImage from "./assets/testa.png"
 import Cerficate from "./assets/certificate.jpeg"
+import axios from 'axios'
+import {toast ,Toaster} from "react-hot-toast"
 
 export default function LibidexLandingPage() {
+  const [formData,setFormData] = useState({
+    FullName:"",
+    Mobile:"",
+    Email:"",
+    CompletedAddress:"",
+    City:"",
+    Pincode:""
+  })
+  console.log("this is formData",formData)
+  const handleChange=(e)=>{
+    setFormData({...formData,[e.target.name]:e.target.value})
+  }
 
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
+    if(!formData.FullName || !formData.Email || !formData.CompletedAddress || !formData.City || !formData.Mobile || !formData.Pincode){
+      return toast.error("All fields are required")
+    }
+    try{
+      const response = await axios.post('http://localhost:5000/api/contact',formData,{
+        "headers":{
+          "Content-Type":"application/json"
+        }
+      })
+      console.log('response',response)
+      toast.success("Form Submission Successfully",response)
+      setFormData({
+        FullName:"",
+        Email:"",
+        CompletedAddress:"",
+        City:"",
+        Pincode:"",
+        Mobile:""
+
+      })
+    }catch(error){
+      console.log(error)
+      toast.error("internal server error")
+    }
+  }
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
     minutes: 52,
@@ -46,6 +88,7 @@ export default function LibidexLandingPage() {
 
   const formatNum = (num) => String(num).padStart(2, '0');
   return (
+   <>
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-blue-900 text-white py-3">
@@ -654,6 +697,267 @@ export default function LibidexLandingPage() {
     </div>
   </div>
 </section>
+
+{/* Order Form Section */}
+<section className="py-12 bg-gradient-to-b from-gray-50 to-white">
+  <div className="container mx-auto px-4 max-w-4xl">
+    <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+      {/* Form Header */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+          अभी ऑर्डर फॉर्म भरें
+        </h2>
+        <p className="text-blue-100">
+          सीमित समय की पेशकश - सिर्फ ₹2490 में पाएं Testro Booster
+        </p>
+      </div>
+
+      {/* Form Body */}
+      <div className="p-6 md:p-8">
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Left Column - Product & Timer */}
+          <div>
+            <div className="bg-gray-100 rounded-xl p-4 mb-6">
+              <div className="h-48 rounded-lg overflow-hidden mb-4">
+                <img
+                  src={FirstImag}
+                  alt="Testro Booster"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-bold text-gray-800 mb-2">
+                  Testro Booster
+                </p>
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <span className="text-3xl font-bold text-orange-600">
+                    ₹2,490
+                  </span>
+                  <span className="text-lg text-gray-500 line-through">
+                    ₹4,980
+                  </span>
+                  <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded-full">
+                    50% OFF
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Timer */}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+              <p className="text-center font-bold text-gray-700 mb-3">
+                ⏰ ऑफर समाप्त होने में:
+              </p>
+              <div className="flex justify-center gap-3">
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
+                    {formatNum(timeLeft.hours)}
+                  </div>
+                  <span className="text-xs text-gray-600 mt-1">घंटे</span>
+                </div>
+                <div className="text-xl font-bold text-blue-900 mt-3">:</div>
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
+                    {formatNum(timeLeft.minutes)}
+                  </div>
+                  <span className="text-xs text-gray-600 mt-1">मिनट</span>
+                </div>
+                <div className="text-xl font-bold text-blue-900 mt-3">:</div>
+                <div className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
+                    {formatNum(timeLeft.seconds)}
+                  </div>
+                  <span className="text-xs text-gray-600 mt-1">सेकंड</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="space-y-2">
+              {[
+                '✅ 100% प्राकृतिक सामग्री',
+                '✅ कोई दुष्प्रभाव नहीं',
+                '✅ डॉक्टर द्वारा अनुशंसित',
+                '✅ सुरक्षित ऑनलाइन भुगतान',
+                '✅ 7 दिन में डिलीवरी'
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600" />
+                  <span className="text-gray-700">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column - Form */}
+          <div>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  पूरा नाम *
+                </label>
+                <input
+                  type="text"
+                  name='FullName'
+                  value={formData.FullName}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="अपना पूरा नाम दर्ज करें"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  मोबाइल नंबर *
+                </label>
+                <input
+                  type="tel"
+                  name='Mobile'
+                  value={formData.Mobile}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="10 अंकों का मोबाइल नंबर"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  ईमेल
+                </label>
+                <input
+                  type="email"
+                  name='Email'
+                  value={formData.Email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="अपना ईमेल पता"
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  पूरा पता *
+                </label>
+                <textarea
+                  required
+                  name='CompletedAddress'
+                  value={formData.CompletedAddress}
+                  onChange={handleChange}
+                  rows="3"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="घर नंबर, स्ट्रीट, शहर, पिन कोड"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    शहर *
+                  </label>
+                  <input
+                    type="text"
+                    name='City'
+                    value={formData.City}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="शहर"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    पिन कोड *
+                  </label>
+                  <input
+                    type="text"
+                    name='Pincode'
+                    value={formData.Pincode}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="6 अंकों का पिन कोड"
+                  />
+                </div>
+              </div>
+
+         
+
+     
+
+              {/* Terms */}
+              <div className="flex items-start gap-2">
+                <input
+                  type="checkbox"
+                  required
+                  className="mt-1 text-blue-600"
+                />
+                <span className="text-xs text-gray-600">
+                  मैंने सभी नियमों और शर्तों को पढ़ लिया है और स्वीकार करता हूं। मुझे पता है कि यह उत्पाद चिकित्सा सलाह का विकल्प नहीं है और उपयोग से पहले अपने डॉक्टर से परामर्श करूंगा।
+                </span>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-center gap-2" >
+                  <span>अभी ऑर्डर करें</span>
+                  <span className="text-sm bg-white text-orange-600 px-2 py-1 rounded-full">
+                    ₹2,490
+                  </span>
+                </div>
+                <div className="text-sm font-normal mt-1">
+                  मुफ्त शिपिंग • 7 दिन में डिलीवरी
+                </div>
+              </button>
+            </form>
+
+            {/* Trust Badges */}
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="flex justify-center gap-4">
+                <div className="text-center">
+                  <div className="w-10 h-10 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-1">
+                    <span className="text-green-600 font-bold">✓</span>
+                  </div>
+                  <span className="text-xs text-gray-600">सुरक्षित</span>
+                </div>
+                <div className="text-center">
+                  <div className="w-10 h-10 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-1">
+                    <span className="text-blue-600 font-bold">🔒</span>
+                  </div>
+                  <span className="text-xs text-gray-600">गोपनीय</span>
+                </div>
+                <div className="text-center">
+                  <div className="w-10 h-10 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-1">
+                    <span className="text-purple-600 font-bold">★</span>
+                  </div>
+                  <span className="text-xs text-gray-600">गुणवत्ता</span>
+                </div>
+                <div className="text-center">
+                  <div className="w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-1">
+                    <span className="text-red-600 font-bold">♥</span>
+                  </div>
+                  <span className="text-xs text-gray-600">भरोसेमंद</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Form Footer */}
+      <div className="bg-gray-50 p-4 text-center border-t">
+        <p className="text-xs text-gray-600">
+          📞 कोई प्रश्न है? हमें कॉल करें: <span className="font-bold">1800-123-4567</span> (सुबह 9 बजे से रात 9 बजे तक)
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 {/* Customer Reviews Section */}
       <section className="py-12 bg-white border-t">
         <div className="container mx-auto px-4 max-w-4xl">
@@ -678,7 +982,7 @@ export default function LibidexLandingPage() {
               { name: "विक्रम राठौड़", text: "शानदार जड़ी-बूटियों का मिश्रण है। पूरी तरह प्राकृतिक!", city: "इंदौर" },
               { name: "अशोक गहलोत", text: "शुरुआत में मुझे यकीन नहीं था, लेकिन 10 दिन बाद परिणाम दिखने लगे।", city: "जोधपुर" },
               { name: "समीर शेख", text: "बहुत ही अच्छा अनुभव रहा। कस्टमर सपोर्ट टीम बहुत मददगार है।", city: "हैदराबाद" },
-              { name: "रवि शास्त्री", text: "पेशाब का प्रवाह अब सामान्य हो गया है। बहुत संतुष्ट हूँ।", city: "रांची" },
+              { name: "रवि शास्त्री", text: "पेशाब का प्रवाह अब सामन्य हो गया है। बहुत संतुष्ट हूँ।", city: "रांची" },
               { name: "जसप्रीत बुमराह", text: "पूरी तरह सुरक्षित महसूस होता है। कोई घबराहट या साइड इफेक्ट नहीं।", city: "अहमदाबाद" },
               { name: "केएल राहुल", text: "पैकेजिंग बहुत अच्छी है, किसी को पता नहीं चलता अंदर क्या है। प्राइवेसी के लिए 10/10।", city: "बेंगलुरु" },
               { name: "ईशान किशन", text: "मेरे दोस्त ने इसे रिकमेंड किया था। उसने कहा था कि यह बेस्ट है।", city: "पटना" },
@@ -716,5 +1020,7 @@ export default function LibidexLandingPage() {
         </div>
       </footer>
     </div>
+    <Toaster/>
+   </>
   );
 }
