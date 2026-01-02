@@ -3,6 +3,10 @@ import { Check, CheckCheck } from 'lucide-react';
 import FirstImag from "./assets/FirstImage.jpeg"
 import SecondImag from "./assets/SecondImage.jpeg"
 import Doctor from "./assets/doctorimage.jpg"
+import Graph from "./assets/graph.jpg"
+import DocterThird from "./assets/docter3.jpeg"
+import ProductImage from "./assets/productimg2.jpeg"
+import Product from "./assets/productimg.png"
 export default function LibidexLandingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -101,7 +105,7 @@ export default function LibidexLandingPage() {
     />
   </div>
 
-  <p className="font-bold text-lg mb-2">Libidex</p>
+  <p className="font-bold text-lg mb-2">Testro Booster</p>
 
   <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full w-full">
     अभी प्राप्त करें ₹2490
@@ -178,7 +182,7 @@ export default function LibidexLandingPage() {
 
 
             <p className="font-bold text-lg mt-8">
-              लिबिदेक्स नहीं। मुझे इन पुरुषों ने यह इंट्रोडन्टैनिका में ध्यान डूकारे का आह्वान किया, और पहली बार मैने उनसे एक अद्वितिय उत्पाद को बारे में सुना। Libidex
+              लिबिदेक्स नहीं। मुझे इन पुरुषों ने यह इंट्रोडन्टैनिका में ध्यान डूकारे का आह्वान किया, और पहली बार मैने उनसे एक अद्वितिय उत्पाद को बारे में सुना। Testro Booster
             </p>
           </div>
         </div>
@@ -195,8 +199,8 @@ export default function LibidexLandingPage() {
 
           {/* Ingredients */}
           <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-            <h3 className="text-2xl font-bold mb-6 text-center">Libidex की संरचना क्या है?</h3>
-            <p className="mb-6">Libidex के 7 मुख्य घटक:</p>
+            <h3 className="text-2xl font-bold mb-6 text-center">Testro Booster की संरचना क्या है?</h3>
+            <p className="mb-6">Testro Booster के 7 मुख्य घटक:</p>
 
             <div className="space-y-6">
               <div className="flex items-start gap-4">
@@ -281,7 +285,7 @@ export default function LibidexLandingPage() {
 
           {/* Benefits List */}
           <div className="bg-green-50 border-2 border-green-400 p-6 rounded-lg">
-            <h3 className="text-xl font-bold mb-6">अब Libidex के मुख्य प्रभावों का पहली बार दोने के बाद ये विश्लेषण करते हैं:</h3>
+            <h3 className="text-xl font-bold mb-6">अब Testro Booster के मुख्य प्रभावों का पहली बार दोने के बाद ये विश्लेषण करते हैं:</h3>
             
             <div className="space-y-3">
               {[
@@ -306,7 +310,7 @@ export default function LibidexLandingPage() {
       {/* How it Works */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-2xl font-bold mb-8 text-center">उत्पाद कैसे काम करता है Libidex</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center">उत्पाद कैसे काम करता है Testro Booster</h2>
           
           <div className="space-y-6 bg-gray-50 p-6 rounded-lg">
             <div className="border-l-4 border-red-500 pl-4">
@@ -338,14 +342,16 @@ export default function LibidexLandingPage() {
             </div>
 
             {/* Graph */}
-            <div className="mt-8 bg-white p-6 rounded-lg shadow">
-              <div className="h-64 bg-gradient-to-tr from-pink-100 via-pink-200 to-pink-400 rounded relative">
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-800"></div>
-                <div className="absolute bottom-0 left-0 top-0 w-1 bg-gray-800"></div>
-                <div className="absolute bottom-2 left-10 text-xs">सप्ताह</div>
-                <div className="absolute top-1/2 -left-8 -rotate-90 text-xs">लाभ</div>
-              </div>
-            </div>
+         <div className="mt-8 bg-white  rounded-lg shadow">
+  <div className="h-64 bg-gradient-to-tr from-pink-100 via-pink-200 to-pink-400 rounded relative overflow-hidden">
+    <img
+      src={Graph}
+      alt="Graph"
+      className="absolute inset-0 w-full h-full "
+    />
+  </div>
+</div>
+
           </div>
         </div>
       </section>
@@ -360,9 +366,7 @@ export default function LibidexLandingPage() {
 
             <div className="bg-gray-200 rounded-lg p-8 mb-6 aspect-video flex items-center justify-center">
               <div className="text-center">
-                <div className="w-24 h-24 bg-white rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-4xl">▶</span>
-                </div>
+               <img src={DocterThird} alt="" />
                 {/* <p className="text-gray-600">डॉ राजेंद्र सिंह यादव</p> */}
               </div>
             </div>
@@ -374,7 +378,7 @@ export default function LibidexLandingPage() {
 
           <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg">
             <p className="text-gray-700 mb-4">
-              मुझे पर भरोसा करें, इस उम्र में, एक पुरुष ने लिए नियमित रूप से संबोग करना सामान्य है। इसके अलावा, यहां तक कि अगर आपकी उम्र 60 से अधिक है, तो भी आप <span className="font-bold">Libidex</span> के साथ अपनी शक्ति आसानी से वृद्धल कर सकते हैं।
+              मुझे पर भरोसा करें, इस उम्र में, एक पुरुष ने लिए नियमित रूप से संबोग करना सामान्य है। इसके अलावा, यहां तक कि अगर आपकी उम्र 60 से अधिक है, तो भी आप <span className="font-bold">Testro Booster</span> के साथ अपनी शक्ति आसानी से वृद्धल कर सकते हैं।
             </p>
           </div>
         </div>
@@ -385,11 +389,11 @@ export default function LibidexLandingPage() {
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-gray-50 p-6 rounded-lg mb-8">
             <p className="text-gray-700 mb-4">
-              <span className="font-bold">Libidex</span> की सहायता से, अभी भुदी तक किसी भी नरकारिक स्वास्थ्य के कार्य में सुधार के लिए डुरी तर्चे से हुर्सुनें हो साप्तिक (ताज, इसके इर्तुनें हानिन मेरे में बराक नहीं निकली)। लोकिन उसमें मैं स्पश्मासलिव मज्ञाना विन्राब करते हैं, लेकिन इसे मैं <span className="font-bold">Libidex</span> भर्जन बीकश है।
+              <span className="font-bold">Testro Booster</span> की सहायता से, अभी भुदी तक किसी भी नरकारिक स्वास्थ्य के कार्य में सुधार के लिए डुरी तर्चे से हुर्सुनें हो साप्तिक (ताज, इसके इर्तुनें हानिन मेरे में बराक नहीं निकली)। लोकिन उसमें मैं स्पश्मासलिव मज्ञाना विन्राब करते हैं, लेकिन इसे मैं <span className="font-bold">Testro Booster</span> भर्जन बीकश है।
             </p>
 
             <p className="text-gray-700 mb-4">
-              <span className="font-bold">Libidex</span> का एक और महत्वपूर्ण लाभ है कैंप्सुल ने केवल प्राकृतिक प्रमाणी दुंगे से भरा है जो भरण का पुनर्स्थापित करती हैं, बल्कि प्रोस्टेटाइटिस की सबसे अच्छी दोचिबंयों में से हैं। यह साझू है कि बिन कुछ इसे लोगा दीन होतायगा है कुंस अर्रगर हैं और यह मह्त्वपूर्ण नहीं करते हैं कि यह हुए सुयोग के शारीरिक और भावनालिक स्वास्थ्य के लिए कितना महत्वपूर्ण है।
+              <span className="font-bold">Testro Booster</span> का एक और महत्वपूर्ण लाभ है कैंप्सुल ने केवल प्राकृतिक प्रमाणी दुंगे से भरा है जो भरण का पुनर्स्थापित करती हैं, बल्कि प्रोस्टेटाइटिस की सबसे अच्छी दोचिबंयों में से हैं। यह साझू है कि बिन कुछ इसे लोगा दीन होतायगा है कुंस अर्रगर हैं और यह मह्त्वपूर्ण नहीं करते हैं कि यह हुए सुयोग के शारीरिक और भावनालिक स्वास्थ्य के लिए कितना महत्वपूर्ण है।
             </p>
 
             <p className="text-gray-700">
@@ -402,11 +406,11 @@ export default function LibidexLandingPage() {
 
             <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
               <p className="text-gray-700 mb-4">
-                <span className="font-bold">ध्यान दें</span> विशेष रूप से हमारे पाठकों के लिए, हमने ऑर्डर किए हैं। एक्सविडन अविव्त्रीकिणा से <span className="font-bold text-blue-600">Libidex</span> यहां ऑर्डर करें, आपको गुणवत्तापूर्ण उत्पाद मिलना हैं। निश्चित प्रमाण लिडिक है, तैयार!
+                <span className="font-bold">ध्यान दें</span> विशेष रूप से हमारे पाठकों के लिए, हमने ऑर्डर किए हैं। एक्सविडन अविव्त्रीकिणा से <span className="font-bold text-blue-600">Testro Booster</span> यहां ऑर्डर करें, आपको गुणवत्तापूर्ण उत्पाद मिलना हैं। निश्चित प्रमाण लिडिक है, तैयार!
               </p>
 
               <p className="text-gray-700">
-                50% की छुट के साथ सीमित प्रोमोशन के दुरान में <span className="font-bold text-blue-600">Libidex</span> पाएं। प्रोमोशनल पेकेज की संख्या सीमित है, जल्दी करें!
+                50% की छुट के साथ सीमित प्रोमोशन के दुरान में <span className="font-bold text-blue-600">Testro Booster</span> पाएं। प्रोमोशनल पेकेज की संख्या सीमित है, जल्दी करें!
               </p>
             </div>
 
@@ -432,7 +436,7 @@ export default function LibidexLandingPage() {
       <section className="py-12 bg-gray-100">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg">
-            <h3 className="text-2xl font-bold mb-6 text-center">Libidex कैसे लेना चाहिए?</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center">Testro Booster कैसे लेना चाहिए?</h3>
             
             <div className="space-y-4">
               <div className="flex items-center gap-4">
@@ -459,11 +463,11 @@ export default function LibidexLandingPage() {
 
             <div className="mt-8 bg-white p-6 rounded-lg">
               <p className="text-gray-700 mb-4">
-                यह महत्वपूर्ण है कि <span className="font-bold text-blue-600">Libidex</span> es efedivo tanto para hombres शारीरिक रोग (स्पर्मं दोष) ऑथम उन दोषों के समय-समय उन दोगों के लिए भी प्रमावी है जिनके मनोवैज्ञानिक समस्याएं हैं (अनमेदका, संबंधी मुद्दों की वजह से, अनुभव की कमी, अवसाद)।
+                यह महत्वपूर्ण है कि <span className="font-bold text-blue-600">Testro Booster</span> es efedivo tanto para hombres शारीरिक रोग (स्पर्मं दोष) ऑथम उन दोषों के समय-समय उन दोगों के लिए भी प्रमावी है जिनके मनोवैज्ञानिक समस्याएं हैं (अनमेदका, संबंधी मुद्दों की वजह से, अनुभव की कमी, अवसाद)।
               </p>
 
               <p className="text-gray-700">
-                <span className="font-bold">Libidex</span> का एक और महत्वपूर्ण लाभ है। कैंप्सुल ने केवल प्राकृतिक प्रमाणी दुंगे से भरा है जो भरण का पुनर्स्थापित करती हैं, बल्कि प्रोस्टेटाइटिस की सबसे अच्छी दोचिबंयों में से है। यह साझू है कि लिन कुछ लोगों दीन होतायगा है और अर्रगर है और यह महत्वपूर्ण नहीं करते हैं कि यह हुए सुयोग के शारीरिक और भावनालिक स्वास्थ्य के लिए कितना महत्वपूर्ण है।
+                <span className="font-bold">Testro Booster</span> का एक और महत्वपूर्ण लाभ है। कैंप्सुल ने केवल प्राकृतिक प्रमाणी दुंगे से भरा है जो भरण का पुनर्स्थापित करती हैं, बल्कि प्रोस्टेटाइटिस की सबसे अच्छी दोचिबंयों में से है। यह साझू है कि लिन कुछ लोगों दीन होतायगा है और अर्रगर है और यह महत्वपूर्ण नहीं करते हैं कि यह हुए सुयोग के शारीरिक और भावनालिक स्वास्थ्य के लिए कितना महत्वपूर्ण है।
               </p>
             </div>
           </div>
@@ -486,7 +490,7 @@ export default function LibidexLandingPage() {
 
     <div className="bg-blue-50 p-6 rounded-lg mb-8">
       <p className="text-gray-700 mb-4">
-        <span className="font-bold text-blue-600">Libidex</span>{" "}
+        <span className="font-bold text-blue-600">Testro Booster</span>{" "}
         एक पिग्तलार्ड पिपुलर है और इस द्वि प्रयोगल्योग स्तार सामर्पैट है,
         जिससे प्रोस्टेटाइटिस के निभाशी उपयोग की कोड करने वाले पीर्भूलेओं
         को शांति मिलती है।
@@ -498,7 +502,7 @@ export default function LibidexLandingPage() {
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
             <img
-              src={Doctor}
+              src={ProductImage}
               alt="CE Certificate"
               className="w-full h-full object-contain"
             />
@@ -512,7 +516,7 @@ export default function LibidexLandingPage() {
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
             <img
-              src={Doctor}
+              src={Product}
               alt="Quality Certificate"
               className="w-full h-full object-contain"
             />
@@ -527,7 +531,7 @@ export default function LibidexLandingPage() {
 
     <div className="bg-gray-50 p-6 rounded-lg">
       <p className="text-gray-700">
-        <span className="font-bold text-blue-600">Libidex</span>{" "}
+        <span className="font-bold text-blue-600">Testro Booster</span>{" "}
         मान करता है। लेकिन, प्रिंयता के निर्विश्ट, केम्सुल कुंरीर के लिए
         पूरी तरह से हुर्सुनें है और न केवल एक तात्कालिक प्रभाव प्रदान करता
         है, बल्कि दीर्घकालित समय के लिए भी वैज्ञानिक प्रभाव प्रदान करता है।
