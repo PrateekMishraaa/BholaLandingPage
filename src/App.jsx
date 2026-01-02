@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Check, CheckCheck } from 'lucide-react';
 import FirstImag from "./assets/FirstImage.jpeg"
 import SecondImag from "./assets/SecondImage.jpeg"
@@ -6,8 +6,45 @@ import Doctor from "./assets/doctorimage.jpg"
 import Graph from "./assets/graph.jpg"
 import DocterThird from "./assets/docter3.jpeg"
 import ProductImage from "./assets/productimg2.jpeg"
-import Product from "./assets/productimg.png"
+import Cerficate from "./assets/certificate.jpeg"
+
 export default function LibidexLandingPage() {
+
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 0,
+    minutes: 52,
+    seconds: 57,
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        let { hours, minutes, seconds } = prev;
+
+        if (hours === 0 && minutes === 0 && seconds === 0) {
+          clearInterval(timer);
+          return prev;
+        }
+
+        if (seconds > 0) {
+          seconds--;
+        } else {
+          seconds = 59;
+          if (minutes > 0) {
+            minutes--;
+          } else {
+            minutes = 59;
+            if (hours > 0) hours--;
+          }
+        }
+        return { hours, minutes, seconds };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatNum = (num) => String(num).padStart(2, '0');
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -512,28 +549,22 @@ export default function LibidexLandingPage() {
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
             <img
-              src={ProductImage}
+              src={Cerficate}
               alt="CE Certificate"
               className="w-full h-full object-contain"
             />
           </div>
           <p className="text-center text-sm text-gray-600">
-            European Certification
+            European Certification/  Quality Certification
           </p>
         </div>
 
         {/* Certificate 2 */}
         <div className="bg-white p-4 rounded-lg shadow">
           <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
-            <img
-              src={Product}
-              alt="Quality Certificate"
-              className="w-full h-full object-contain"
-            />
+           
           </div>
-          <p className="text-center text-sm text-gray-600">
-            Quality Certification
-          </p>
+          
         </div>
 
       </div>
@@ -550,7 +581,28 @@ export default function LibidexLandingPage() {
 
   </div>
 </section>
-
+<div className="flex justify-center gap-4 my-4">
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
+                      {formatNum(timeLeft.hours)}
+                    </div>
+                    <span className="text-[10px] uppercase text-gray-500 font-bold">घंटे</span>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-900 mt-2">:</div>
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
+                      {formatNum(timeLeft.minutes)}
+                    </div>
+                    <span className="text-[10px] uppercase text-gray-500 font-bold">मिनट</span>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-900 mt-2">:</div>
+                  <div className="text-center">
+                    <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
+                      {formatNum(timeLeft.seconds)}
+                    </div>
+                    <span className="text-[10px] uppercase text-gray-500 font-bold">सेकंड</span>
+                  </div>
+                </div>
 
       {/* Final CTA */}
    <section className="py-16 bg-gradient-to-b from-orange-100 to-orange-200">
