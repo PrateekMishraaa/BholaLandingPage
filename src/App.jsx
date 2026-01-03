@@ -1,57 +1,90 @@
 import React, { useEffect, useState } from 'react';
 import { Check, CheckCheck } from 'lucide-react';
-import FirstImag from "./assets/FirstImage.jpeg"
-import SecondImag from "./assets/SecondImage.jpeg"
-import Doctor from "./assets/doctorimage.jpg"
-import Graph from "./assets/graph.jpg"
-import DocterThird from "./assets/docter3.jpeg"
-import ProductImage from "./assets/testa.png"
-import Cerficate from "./assets/certificate.jpeg"
-import axios from 'axios'
-import {toast ,Toaster} from "react-hot-toast"
+import { FaWhatsapp } from 'react-icons/fa';
+import FirstImag from "./assets/FirstImage.jpeg";
+import SecondImag from "./assets/SecondImage.jpeg";
+import Doctor from "./assets/doctorimage.jpg";
+import Graph from "./assets/graph.jpg";
+import DocterThird from "./assets/docter3.jpeg";
+import ProductImage from "./assets/testa.png";
+import Cerficate from "./assets/certificate.jpeg";
+import axios from 'axios';
+import { toast, Toaster } from "react-hot-toast";
 
 export default function LibidexLandingPage() {
-  const [formData,setFormData] = useState({
-    FullName:"",
-    Mobile:"",
-    Email:"",
-    CompletedAddress:"",
-    City:"",
-    Pincode:""
-  })
-  console.log("this is formData",formData)
-  const handleChange=(e)=>{
-    setFormData({...formData,[e.target.name]:e.target.value})
-  }
+  const [formData, setFormData] = useState({
+    FullName: "",
+    Mobile: "",
+    Email: "",
+    CompletedAddress: "",
+    City: "",
+    Pincode: ""
+  });
 
+  // WhatsApp configuration
+  const whatsappNumber = "9211608061"; // Replace with your actual WhatsApp number
+  const whatsappMessage = encodeURIComponent(`नमस्ते! मैं Testro Booster के बारे में अधिक जानकारी चाहता हूँ। कृपया मुझे विस्तार से बताएं।\n\nनाम: ${formData.FullName || ''}\nमोबाइल: ${formData.Mobile || ''}`);
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
-  const handleSubmit=async(e)=>{
-    e.preventDefault()
-    if(!formData.FullName || !formData.Email || !formData.CompletedAddress || !formData.City || !formData.Mobile || !formData.Pincode){
-      return toast.error("सभी फ़ील्ड भरना आवश्यक है")
+  // Handle WhatsApp click
+  const handleWhatsAppClick = () => {
+    if (formData.FullName || formData.Mobile) {
+      const message = encodeURIComponent(
+        `नमस्ते! मैं Testro Booster के बारे में अधिक जानकारी चाहता हूँ।\n\n` +
+        `${formData.FullName ? `नाम: ${formData.FullName}\n` : ''}` +
+        `${formData.Mobile ? `मोबाइल: ${formData.Mobile}\n` : ''}` +
+        `कृपया मुझे विस्तार से बताएं।`
+      );
+      window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+    } else {
+      window.open(whatsappUrl, '_blank');
     }
-    try{
-      const response = await axios.post('http://localhost:5000/api/contact',formData,{
-        "headers":{
-          "Content-Type":"application/json"
+  };
+
+   const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle WhatsApp order
+  const handleOrderViaWhatsApp = () => {
+    const orderMessage = encodeURIComponent(
+      `नमस्ते! मैं Testro Booster ऑर्डर करना चाहता हूँ।\n\n` +
+      `🔸 प्रोडक्ट: Testro Booster\n` +
+      `🔸 प्राइस: ₹2,490\n` +
+      `🔸 डिलीवरी: 7 दिन में\n\n` +
+      `कृपया मुझे ऑर्डर कन्फर्म करने के लिए गाइड करें।`
+    );
+    window.open(`https://wa.me/${whatsappNumber}?text=${orderMessage}`, '_blank');
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.FullName || !formData.Email || !formData.CompletedAddress || !formData.City || !formData.Mobile || !formData.Pincode) {
+      return toast.error("सभी फ़ील्ड भरना आवश्यक है");
+    }
+    try {
+      const response = await axios.post('http://localhost:5000/api/contact', formData, {
+        "headers": {
+          "Content-Type": "application/json"
         }
-      })
-      console.log('response',response)
-      toast.success("फॉर्म सफलतापूर्वक जमा हो गया",response)
+      });
+      toast.success("फॉर्म सफलतापूर्वक जमा हो गया", response);
       setFormData({
-        FullName:"",
-        Email:"",
-        CompletedAddress:"",
-        City:"",
-        Pincode:"",
-        Mobile:""
-
-      })
-    }catch(error){
-      console.log(error)
-      toast.error("आंतरिक सर्वर त्रुटि")
+        FullName: "",
+        Email: "",
+        CompletedAddress: "",
+        City: "",
+        Pincode: "",
+        Mobile: ""
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("आंतरिक सर्वर त्रुटि");
     }
-  }
+  };
+
+  // Timer functionality
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
     minutes: 52,
@@ -87,935 +120,1007 @@ export default function LibidexLandingPage() {
   }, []);
 
   const formatNum = (num) => String(num).padStart(2, '0');
+  
   return (
-   <>
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-blue-900 text-white py-3">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-              <span className="text-blue-900 font-bold text-sm">BAYER</span>
-            </div>
+    <>
+      <div className="min-h-screen bg-gray-50">
+        {/* WhatsApp Floating Button */}
+        <div className="fixed bottom-6 right-6 z-50">
+          <button
+            onClick={handleWhatsAppClick}
+            className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+            aria-label="WhatsApp पर संपर्क करें"
+          >
+            <FaWhatsapp className="w-8 h-8" />
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center animate-pulse">
+              !
+            </span>
+          </button>
+          <div className="mt-2 text-center">
+            <span className="bg-white text-green-600 text-xs font-bold px-2 py-1 rounded-full shadow">
+              WhatsApp
+            </span>
           </div>
         </div>
-      </header>
 
-      {/* Main Banner */}
-      <section className="bg-gradient-to-r from-gray-100 to-gray-200 py-8 md:py-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-6">
-            <h2 className="text-lg md:text-xl text-gray-700 mb-4">बायर इंडिया के एंड्रोलॉजिस्ट, यूरोलॉजी और एंड्रोलॉजी क्षेत्र में</h2>
-            <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-6">
-              "एक किफायती उत्पाद प्रोस्टेट की सूजन को कम करेगा और 75 साल"
-            </h1>
-            <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 inline-block">
-             <p className="text-sm md:text-base">
-  की उम्र में भी स्वस्थ शक्ति बनाए रखेगा। विशेष रूप से पुरुषों के लिए,
-  सबसे मजबूत प्राकृतिक उपचार केवल{" "}
-  <span className="font-bold text-red-600">2490 INR!</span>{" "}
-  में अंतिम{" "}
-  {new Date().toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  })}{" "}
-  तक मान्य है!
-</p>
-
-            </div>
-            <p className="text-gray-700">प्रोस्टेटाइटिस नपुंसकता, प्रोस्टेट कैंसर, बांझपन का कारण है!</p>
-          </div>
-
-          {/* Doctor Section */}
-          <div className="grid md:grid-cols-2 gap-8 items-start max-w-6xl mx-auto">
-            <div className="bg-gradient-to-b from-blue-100 to-white p-6 rounded-lg relative">
-              <div className="absolute top-4 right-4 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-blue-900 font-bold text-xs">BAYER</span>
+        {/* Header */}
+        <header className="bg-blue-900 text-white py-3">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                <span className="text-blue-900 font-bold text-sm">BAYER</span>
               </div>
-              <img 
-                src={Doctor} 
-                alt="Dr Rajinder Singh Yadav" 
-                className="w-full rounded-lg shadow-lg"
-              />
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-white p-4 rounded-lg shadow">
-                <h3 className="font-bold text-lg mb-2">लेखक के बारे में: डॉ राजेंद्र सिंह यादव</h3>
-                <ul className="space-y-2 text-sm">
-                  <li>• यूरोलॉजी-एंड्रोलॉजी सर्जन, यूरोलॉजी के प्रोफेसर</li>
-                  <li>• चिकित्सा विज्ञान के डॉक्टर</li>
-                </ul>
-              </div>
-
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm mb-4">
-                  प्लैटिनम यूरोलॉजी रैली में पूरे भारत का अभियान किया है।
-                </p>
-                <p className="text-sm">
-                  न्यूयॉर्क और हार्वर्ड लैब में 135 व्यावहारिक प्रोजेक्ट पर काम किया और लिबिडेक्स का आविष्कार किया है जो हमें पसंद है।
-                </p>
-              </div>
-
-              <div className="bg-white p-4 rounded-lg shadow space-y-3">
-                <div className="flex items-start gap-2">
-                  <span className="font-bold text-blue-900">1.</span>
-                  <p className="text-sm"><span className="font-bold">100% पुरुषों</span> में सूजन में मुक्त सुधार हुआ।</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="font-bold text-blue-900">2.</span>
-                  <p className="text-sm"><span className="font-bold">100% पुरुषों</span> को कोई प्रमुख साइड इफेक्ट अनुभव नहीं होता।</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="font-bold text-blue-900">3.</span>
-                  <p className="text-sm"><span className="font-bold">87% पुरुषों</span> में चमक के समय में उल्लेखनीय वृद्धि (2 से 3 गुना) रिपोर्ट की।</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="font-bold text-blue-900">4.</span>
-                  <p className="text-sm"><span className="font-bold">92% पुरुषों</span> ने स्थायी शक्ति के सुधार (मात्रा और संतुष्टि) में वृद्धि रिपोर्ट की।</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="font-bold text-blue-900">5.</span>
-                  <p className="text-sm"><span className="font-bold">98% पुरुषों</span> में स्वस्थ प्रोस्टेट (प्रोस्टेटाइटिस) प्रतिक्रिया कर चुके हैं और प्रोस्टेट कैंसर में सुधार होता है।</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="font-bold text-blue-900">6.</span>
-                  <p className="text-sm"><span className="font-bold">100% पुरुषों में,</span> कामकाज शक्ति बढ़ती है और देर तक टिकती है।</p>
-                </div>
-              </div>
-
-              {/* Product Image */}
-            <div className="bg-white p-6 rounded-lg shadow text-center">
-  <div className="bg-gray-200 h-44 rounded-lg mb-3 overflow-hidden">
-    <img
-      src={FirstImag}
-      alt="Libidex"
-      className="w-full h-full object-contain"
-    />
-  </div>
-
-  <p className="font-bold text-lg mb-2">Testro Booster</p>
-
-  <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full w-full">
-    अभी प्राप्त करें ₹2490
-  </button>
-</div>
-
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <FaWhatsapp className="w-5 h-5" />
+                <span className="hidden md:inline">WhatsApp पर बात करें</span>
+                <span className="md:hidden">WhatsApp</span>
+              </a>
             </div>
           </div>
-        </div>
-      </section>
+        </header>
 
-      {/* Interview Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">प्रिय पाठकों को हमारा नमस्कार!</h2>
-          
-          <div className="space-y-6 text-gray-700">
-            <p>
-              डॉ राजेंद्र सिंह यादव - 2021 में मेलिस्टे मेडिकल कैनसस के अध्यक्ष। बायर में यूरोलॉजी और एंड्रोलॉजी क्षेत्र के महाप्रबंधक।
-            </p>
+        {/* Main Banner */}
+        <section className="bg-gradient-to-r from-gray-100 to-gray-200 py-8 md:py-12">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-6">
+              <h2 className="text-lg md:text-xl text-gray-700 mb-4">बायर इंडिया के एंड्रोलॉजिस्ट, यूरोलॉजी और एंड्रोलॉजी क्षेत्र में</h2>
+              <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-6">
+                "एक किफायती उत्पाद प्रोस्टेट की सूजन को कम करेगा और 75 साल"
+              </h1>
+              <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 inline-block">
+                <p className="text-sm md:text-base">
+                  की उम्र में भी स्वस्थ शक्ति बनाए रखेगा। विशेष रूप से पुरुषों के लिए,
+                  सबसे मजबूत प्राकृतिक उपचार केवल{" "}
+                  <span className="font-bold text-red-600">2490 INR!</span>{" "}
+                  में अंतिम{" "}
+                  {new Date().toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                  })}{" "}
+                  तक मान्य है!
+                </p>
+              </div>
+              <p className="text-gray-700">प्रोस्टेटाइटिस नपुंसकता, प्रोस्टेट कैंसर, बांझपन का कारण है!</p>
+            </div>
+
+            {/* Doctor Section */}
+            <div className="grid md:grid-cols-2 gap-8 items-start max-w-6xl mx-auto">
+              <div className="bg-gradient-to-b from-blue-100 to-white p-6 rounded-lg relative">
+                <div className="absolute top-4 right-4 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+                  <span className="text-blue-900 font-bold text-xs">BAYER</span>
+                </div>
+                <img 
+                  src={Doctor} 
+                  alt="Dr Rajinder Singh Yadav" 
+                  className="w-full rounded-lg shadow-lg"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <div className="bg-white p-4 rounded-lg shadow">
+                  <h3 className="font-bold text-lg mb-2">लेखक के बारे में: डॉ राजेंद्र सिंह यादव</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li>• यूरोलॉजी-एंड्रोलॉजी सर्जन, यूरोलॉजी के प्रोफेसर</li>
+                    <li>• चिकित्सा विज्ञान के डॉक्टर</li>
+                  </ul>
+                </div>
+
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm mb-4">
+                    प्लैटिनम यूरोलॉजी रैली में पूरे भारत का अभियान किया है।
+                  </p>
+                  <p className="text-sm">
+                    न्यूयॉर्क और हार्वर्ड लैब में 135 व्यावहारिक प्रोजेक्ट पर काम किया और लिबिडेक्स का आविष्कार किया है जो हमें पसंद है।
+                  </p>
+                </div>
+
+                <div className="bg-white p-4 rounded-lg shadow space-y-3">
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-blue-900">1.</span>
+                    <p className="text-sm"><span className="font-bold">100% पुरुषों</span> में सूजन में मुक्त सुधार हुआ।</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-blue-900">2.</span>
+                    <p className="text-sm"><span className="font-bold">100% पुरुषों</span> को कोई प्रमुख साइड इफेक्ट अनुभव नहीं होता।</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-blue-900">3.</span>
+                    <p className="text-sm"><span className="font-bold">87% पुरुषों</span> में चमक के समय में उल्लेखनीय वृद्धि (2 से 3 गुना) रिपोर्ट की।</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-blue-900">4.</span>
+                    <p className="text-sm"><span className="font-bold">92% पुरुषों</span> ने स्थायी शक्ति के सुधार (मात्रा और संतुष्टि) में वृद्धि रिपोर्ट की।</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-blue-900">5.</span>
+                    <p className="text-sm"><span className="font-bold">98% पुरुषों</span> में स्वस्थ प्रोस्टेट (प्रोस्टेटाइटिस) प्रतिक्रिया कर चुके हैं और प्रोस्टेट कैंसर में सुधार होता है।</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold text-blue-900">6.</span>
+                    <p className="text-sm"><span className="font-bold">100% पुरुषों में,</span> कामकाज शक्ति बढ़ती है और देर तक टिकती है।</p>
+                  </div>
+                </div>
+
+                {/* Product Image */}
+                <div className="bg-white p-6 rounded-lg shadow text-center">
+                  <div className="bg-gray-200 h-44 rounded-lg mb-3 overflow-hidden">
+                    <img
+                      src={FirstImag}
+                      alt="Libidex"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  <p className="font-bold text-lg mb-2">Testro Booster</p>
+
+                  <div className="space-y-3">
+                    <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full w-full">
+                      अभी प्राप्त करें ₹2490
+                    </button>
+                    
+                    <button
+                      onClick={handleOrderViaWhatsApp}
+                      className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full w-full"
+                    >
+                      <FaWhatsapp className="w-5 h-5" />
+                      WhatsApp पर ऑर्डर करें
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Interview Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">प्रिय पाठकों को हमारा नमस्कार!</h2>
             
-            <p>
-              वैज्ञानिक रूप से, प्रोस्टेट स्वास्थ्य और कामेच्छा के अभाव में आयु संबंधित समस्याएं आम हैं। अनियंत्रित रूप से हुआ यह महत्वपूर्ण है। गलत जीवनशैली, लेकिन अपर्याप्त लिंगके के बारे में जानकारी प्राप्त करने के लिए दैनिक अवसर प्रदान करता है। अनुसंधान में भी कितना काम कर रहे हैं, मैं आपको कारण बताता हूं।
-            </p>
-
-            <p>
-              आइए हम अपने हृदय से सीखे हैं। मैं आधुनिक पुरुष को विश्वास दिलाता हूं कि उम्र बढ़ने के साथ मस्तिष्क में कोई बीमारी नहीं होती। मुझे विश्वास है कि 30 साल की उम्र के बाद कई पुरुषों को समस्याएं होती हैं और किसी-किसी में इसका सीधा असर, आगे नज़र और अपनी पहचान का ध्यान नहीं रखते हैं, तो समस्याएं, संबंधों में समस्याएं आंकड़े बताते हैं।
-            </p>
-
-            <div className="bg-blue-50 p-6 rounded-lg my-8">
-              <h3 className="font-bold text-xl mb-4">क्या किसी भी उम्र में संतुष्टि और स्वस्थ प्रोस्टेट संभव है? सप्लीमेंट के बिना लिंग को प्राप्त किया जा सकता है?</h3>
+            <div className="space-y-6 text-gray-700">
+              <p>
+                डॉ राजेंद्र सिंह यादव - 2021 में मेलिस्टे मेडिकल कैनसस के अध्यक्ष। बायर में यूरोलॉजी और एंड्रोलॉजी क्षेत्र के महाप्रबंधक।
+              </p>
               
-              <p className="mb-4">
-                हार्मोन की क्षमताओं की जानकारी है। लेकिन मुख्य सवाल यह है कि उन्हें बढ़ाने के लिए सुरक्षित तरीके के साथ उपचार करने का कोई रास्ता नहीं था। और अब हमें सच्चाई को अपने सामने रखने के बारे में मैं मानती हूं। नया क्या करते हैं? क्या विधि और इसी तरह के उपचारों का चयन करेंगे?
+              <p>
+                वैज्ञानिक रूप से, प्रोस्टेट स्वास्थ्य और कामेच्छा के अभाव में आयु संबंधित समस्याएं आम हैं। अनियंत्रित रूप से हुआ यह महत्वपूर्ण है। गलत जीवनशैली, लेकिन अपर्याप्त लिंगके के बारे में जानकारी प्राप्त करने के लिए दैनिक अवसर प्रदान करता है। अनुसंधान में भी कितना काम कर रहे हैं, मैं आपको कारण बताता हूं।
+              </p>
+
+              <p>
+                आइए हम अपने हृदय से सीखे हैं। मैं आधुनिक पुरुष को विश्वास दिलाता हूं कि उम्र बढ़ने के साथ मस्तिष्क में कोई बीमारी नहीं होती। मुझे विश्वास है कि 30 साल की उम्र के बाद कई पुरुषों को समस्याएं होती हैं और किसी-किसी में इसका सीधा असर, आगे नज़र और अपनी पहचान का ध्यान नहीं रखते हैं, तो समस्याएं, संबंधों में समस्याएं आंकड़े बताते हैं।
+              </p>
+
+              <div className="bg-blue-50 p-6 rounded-lg my-8">
+                <h3 className="font-bold text-xl mb-4">क्या किसी भी उम्र में संतुष्टि और स्वस्थ प्रोस्टेट संभव है? सप्लीमेंट के बिना लिंग को प्राप्त किया जा सकता है?</h3>
+                
+                <p className="mb-4">
+                  हार्मोन की क्षमताओं की जानकारी है। लेकिन मुख्य सवाल यह है कि उन्हें बढ़ाने के लिए सुरक्षित तरीके के साथ उपचार करने का कोई रास्ता नहीं था। और अब हमें सच्चाई को अपने सामने रखने के बारे में मैं मानती हूं। नया क्या करते हैं? क्या विधि और इसी तरह के उपचारों का चयन करेंगे?
+                </p>
+              </div>
+
+              {/* Diagram Section */}
+              <div className="bg-gray-100 p-6 rounded-lg">
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Diagram 1 */}
+                  <div className="bg-white p-4 rounded">
+                    <h4 className="font-bold mb-2">
+                      प्रोस्टेट (BPH) से एंड्रोजन ग्रंथियां
+                    </h4>
+                    <div className="bg-gray-200 h-48 rounded overflow-hidden">
+                      <img
+                        src={FirstImag}
+                        alt="Diagram 1"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Diagram 2 */}
+                  <div className="bg-white p-4 rounded">
+                    <h4 className="font-bold mb-2">
+                      प्रोस्टेट स्वास्थ्य की ओर कदम
+                    </h4>
+                    <div className="bg-gray-200 h-48 rounded overflow-hidden">
+                      <img
+                        src={SecondImag}
+                        alt="Diagram 2"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p className="font-bold text-lg mt-8">
+                लिबिडेक्स नहीं। मुझे इन पुरुषों ने इस इंटरनेट पर ध्यान देने का आह्वान किया, और पहली बार मैंने उनसे एक अद्वितीय उत्पाद के बारे में सुना। Testro Booster
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Product Benefits Section */}
+        <section className="py-12 bg-gray-100">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg mb-8">
+              <p className="text-center font-bold text-lg mb-4">
+                यह 100% प्राकृतिक सामग्री से बनी कैप्सूल हैं: फॉस्फोरस हृदयवर्धक मस्कुलर का अर्क, विटामिन सी हर्ब मिश्रण पथ्या का अर्क, जिंजर, प्रोएंथोसायनिडिन, एल-कार्निटिन, टोकोफेरोल, साथ ही पुरुषों के स्वास्थ्य के लिए उपयोगी विटामिन और खनिज सल्फर की एक बड़ी श्रृंखला।
               </p>
             </div>
 
-            {/* Diagram Section */}
-         <div className="bg-gray-100 p-6 rounded-lg">
-  <div className="grid md:grid-cols-2 gap-6">
+            {/* Ingredients */}
+            <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+              <h3 className="text-2xl font-bold mb-6 text-center">Testro Booster की संरचना क्या है?</h3>
+              <p className="mb-6">Testro Booster के 7 मुख्य घटक:</p>
 
-    {/* Diagram 1 */}
-    <div className="bg-white p-4 rounded">
-      <h4 className="font-bold mb-2">
-        प्रोस्टेट (BPH) से एंड्रोजन ग्रंथियां
-      </h4>
-
-      <div className="bg-gray-200 h-48 rounded overflow-hidden">
-        <img
-          src={FirstImag}
-          alt="Diagram 1"
-          className="w-full h-full object-contain"
-        />
-      </div>
-    </div>
-
-    {/* Diagram 2 */}
-    <div className="bg-white p-4 rounded">
-      <h4 className="font-bold mb-2">
-        प्रोस्टेट स्वास्थ्य की ओर कदम
-      </h4>
-
-      <div className="bg-gray-200 h-48 rounded overflow-hidden">
-        <img
-          src={SecondImag}
-          alt="Diagram 2"
-          className="w-full h-full object-contain"
-        />
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-            <p className="font-bold text-lg mt-8">
-              लिबिडेक्स नहीं। मुझे इन पुरुषों ने इस इंटरनेट पर ध्यान देने का आह्वान किया, और पहली बार मैंने उनसे एक अद्वितीय उत्पाद के बारे में सुना। Testro Booster
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Product Benefits Section */}
-      <section className="py-12 bg-gray-100">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg mb-8">
-            <p className="text-center font-bold text-lg mb-4">
-              यह 100% प्राकृतिक सामग्री से बनी कैप्सूल हैं: फॉस्फोरस हृदयवर्धक मस्कुलर का अर्क, विटामिन सी हर्ब मिश्रण पथ्या का अर्क, जिंजर, प्रोएंथोसायनिडिन, एल-कार्निटिन, टोकोफेरोल, साथ ही पुरुषों के स्वास्थ्य के लिए उपयोगी विटामिन और खनिज सल्फर की एक बड़ी श्रृंखला।
-            </p>
-          </div>
-
-          {/* Ingredients */}
-          <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-            <h3 className="text-2xl font-bold mb-6 text-center">Testro Booster की संरचना क्या है?</h3>
-            <p className="mb-6">Testro Booster के 7 मुख्य घटक:</p>
-
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-pink-200 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-xs">🔴</span>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-pink-200 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs">🔴</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold">बीटा-सिटोस्टेरॉल (Beta-sitosterol):</h4>
+                    <p className="text-sm text-gray-700">
+                      बीटा-सिटोस्टेरॉल एक स्टेरॉल है जो बढ़े हुए प्रोस्टेट में सूजन को कम करने में मदद करता है। यूरिनरी मार्ग के संक्रमण में रेड मूत्र (पेशाब) से बनने वाले कणों को कम करता है और एक अच्छे मूत्र प्रवाह में बदलाव करता है।
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold">बीटा-सिटोस्टेरॉल (Beta-sitosterol):</h4>
-                  <p className="text-sm text-gray-700">
-                    बीटा-सिटोस्टेरॉल एक स्टेरॉल है जो बढ़े हुए प्रोस्टेट में सूजन को कम करने में मदद करता है। यूरिनरी मार्ग के संक्रमण में रेड मूत्र (पेशाब) से बनने वाले कणों को कम करता है और एक अच्छे मूत्र प्रवाह में बदलाव करता है।
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-red-800 rounded-full flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-bold">लाइकोपीन (Lycopene):</h4>
-                  <p className="text-sm text-gray-700">
-                    लाइकोपीन एंटीऑक्सीडेंट है जो आंतरिक सूजन को कम करता है और हृदय प्रोस्टेट से जुड़ी समस्याओं से इन्सुलिन रेसिस्टेंस को कम करता है। एक प्रोस्टेट कैंसर के विकास को रोकता है और इंटरलिग सुरक्षा करता है।
-                  </p>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-red-800 rounded-full flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-bold">लाइकोपीन (Lycopene):</h4>
+                    <p className="text-sm text-gray-700">
+                      लाइकोपीन एंटीऑक्सीडेंट है जो आंतरिक सूजन को कम करता है और हृदय प्रोस्टेट से जुड़ी समस्याओं से इन्सुलिन रेसिस्टेंस को कम करता है। एक प्रोस्टेट कैंसर के विकास को रोकता है और इंटरलिग सुरक्षा करता है।
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-yellow-600 rounded-full flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-bold">फोलिक एसिड (Folic Acid):</h4>
-                  <p className="text-sm text-gray-700">
-                    कैंसर में विपरीत प्रभाव हैं। जो शुक्राणुओं की गतिशीलता में सुधार करता है। विशेष रूप से उम्र के साथ प्रोस्टेट और हृदयवाहिका रोगों में सम्मिलित में भी।
-                  </p>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-yellow-600 rounded-full flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-bold">फोलिक एसिड (Folic Acid):</h4>
+                    <p className="text-sm text-gray-700">
+                      कैंसर में विपरीत प्रभाव हैं। जो शुक्राणुओं की गतिशीलता में सुधार करता है। विशेष रूप से उम्र के साथ प्रोस्टेट और हृदयवाहिका रोगों में सम्मिलित में भी।
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-bold">Zn</span>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="font-bold">Zn</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold">जिंक (Zinc):</h4>
+                    <p className="text-sm text-gray-700">
+                      यह घटक पुरुष हार्मोन टेस्टोस्टेरोन उत्पादन में वृद्धि करता है। हार्मोन टेस्टीज में उत्पादन में रेगुलेशन पर सक्षम होता है। इसके अलावा, शुक्राणु उत्पादन और इम्यूनिटी बढ़ाने में मदद करता है, जो हृदय और मानसिक स्वास्थ्य सुधारने में मददगार है।
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold">जिंक (Zinc):</h4>
-                  <p className="text-sm text-gray-700">
-                    यह घटक पुरुष हार्मोन टेस्टोस्टेरोन उत्पादन में वृद्धि करता है। हार्मोन टेस्टीज में उत्पादन में रेगुलेशन पर सक्षम होता है। इसके अलावा, शुक्राणु उत्पादन और इम्यूनिटी बढ़ाने में मदद करता है, जो हृदय और मानसिक स्वास्थ्य सुधारने में मददगार है।
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-bold">E</span>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="font-bold">E</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold">विटामिन ई (Vitamin E):</h4>
+                    <p className="text-sm text-gray-700">
+                      यह एक शक्तिशाली एंटीऑक्सीडेंट है जो शरीर को स्वस्थ कोशिकाओं की सुरक्षा में मदद करता है। प्रोस्टेट की ऑक्सीजन और ब्लड कोशिकाओं की नई थेरेपी से अवगत है। यह हार्मोन संतुलन में भाग लेता है, जो प्रजनन क्षमता को बढ़ाता है। पुलस्टन और हृदय स्वास्थ्य में भी सुधार करता है।
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold">विटामिन ई (Vitamin E):</h4>
-                  <p className="text-sm text-gray-700">
-                    यह एक शक्तिशाली एंटीऑक्सीडेंट है जो शरीर को स्वस्थ कोशिकाओं की सुरक्षा में मदद करता है। प्रोस्टेट की ऑक्सीजन और ब्लड कोशिकाओं की नई थेरेपी से अवगत है। यह हार्मोन संतुलन में भाग लेता है, जो प्रजनन क्षमता को बढ़ाता है। पुलस्टन और हृदय स्वास्थ्य में भी सुधार करता है।
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-orange-300 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-bold">B1</span>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-orange-300 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="font-bold">B1</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold">विटामिन B1:</h4>
+                    <p className="text-sm text-gray-700">
+                      विटामिन B1 एक प्राकृतिक एनर्जी बूस्टर है, प्रोस्टेट की क्रियाकलापों को रोकता है। जिससे कैंसर कोशिकाएं बढ़ नहीं सकती। रक्त संचार को शुरुआती अवस्था में रोक सकता है। ऊर्जा के स्तर में सुधार करता है। विल्डल बढ़ताया में सहायक है, और एंटीऑक्सीडेंट शक्ति को पुनर्जीवित करता है।
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold">विटामिन B1:</h4>
-                  <p className="text-sm text-gray-700">
-                    विटामिन B1 एक प्राकृतिक एनर्जी बूस्टर है, प्रोस्टेट की क्रियाकलापों को रोकता है। जिससे कैंसर कोशिकाएं बढ़ नहीं सकती। रक्त संचार को शुरुआती अवस्था में रोक सकता है। ऊर्जा के स्तर में सुधार करता है। विल्डल बढ़ताया में सहायक है, और एंटीऑक्सीडेंट शक्ति को पुनर्जीवित करता है।
-                  </p>
-                </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-orange-400 rounded-full flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-bold">विटामिन B12:</h4>
-                  <p className="text-sm text-gray-700">
-                    विटामिन B12 शक्ति में मेटाबॉलिज्म पदोन्नति है, उत्पादन को प्रोत्साहित करता है। फिर ध्यान के माइटोकॉन्ड्रिया को मजबूत करता है, और शुक्राणु उत्पादन को नियंत्रित करता है। एक हृदयवर्धक को पूर्ण हृदय रिसर्च से सुधार करता है।
-                  </p>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-orange-400 rounded-full flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-bold">विटामिन B12:</h4>
+                    <p className="text-sm text-gray-700">
+                      विटामिन B12 शक्ति में मेटाबॉलिज्म पदोन्नति है, उत्पादन को प्रोत्साहित करता है। फिर ध्यान के माइटोकॉन्ड्रिया को मजबूत करता है, और शुक्राणु उत्पादन को नियंत्रित करता है। एक हृदयवर्धक को पूर्ण हृदय रिसर्च से सुधार करता है।
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Benefits List */}
-          <div className="bg-green-50 border-2 border-green-400 p-6 rounded-lg">
-            <h3 className="text-xl font-bold mb-6">अब Testro Booster के मुख्य प्रभावों का पहली बार देखने के बाद ये विश्लेषण करते हैं:</h3>
+            {/* Benefits List */}
+            <div className="bg-green-50 border-2 border-green-400 p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-6">अब Testro Booster के मुख्य प्रभावों का पहली बार देखने के बाद ये विश्लेषण करते हैं:</h3>
+              
+              <div className="space-y-3">
+                {[
+                  'सूजन में सुधार: उत्पादन बढ़ता है, सूजन दूर होने लगती है, संभोग के दौरान आराम रहता है',
+                  'मूत्र क्रिया को सामान्य करता है: मूत्राशय की क्षमता 2-3 गुना बढ़ जाती है, जो साथी के लिए पूर्ण आनंद प्रदान करती है (उत्तेजना होने में सेकंड अधिक समय प्राप्त करने में मदद करता है)',
+                  'प्रोस्टेटाइटिस से प्रोस्टेट कार्य में सुधार करने के लिए मूत्रनली प्रमाणी के कार्य में सुधार करता है।',
+                  'कैंसरयुक्त ट्यूमर के विकास के जोखिम को कम करता है।',
+                  'बीमारी के पुनरावृत्ति को रोकता है।',
+                  'मूत्र को सामान्य करता है।',
+                  'मानसिक संतुष्टि: संभोग के दौरान संतुष्टि, लिंग की संवेदनशीलता और आनंद में वृद्धि के कारण यह जाता है।'
+                ].map((benefit, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <CheckCheck className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                    <p className="text-gray-700">{benefit}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How it Works */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <h2 className="text-2xl font-bold mb-8 text-center">उत्पाद कैसे काम करता है Testro Booster</h2>
             
-            <div className="space-y-3">
-              {[
-                'सूजन में सुधार: उत्पादन बढ़ता है, सूजन दूर होने लगती है, संभोग के दौरान आराम रहता है',
-                'मूत्र क्रिया को सामान्य करता है: मूत्राशय की क्षमता 2-3 गुना बढ़ जाती है, जो साथी के लिए पूर्ण आनंद प्रदान करती है (उत्तेजना होने में सेकंड अधिक समय प्राप्त करने में मदद करता है)',
-                'प्रोस्टेटाइटिस से प्रोस्टेट कार्य में सुधार करने के लिए मूत्रनली प्रमाणी के कार्य में सुधार करता है।',
-                'कैंसरयुक्त ट्यूमर के विकास के जोखिम को कम करता है।',
-                'बीमारी के पुनरावृत्ति को रोकता है।',
-                'मूत्र को सामान्य करता है।',
-                'मानसिक संतुष्टि: संभोग के दौरान संतुष्टि, लिंग की संवेदनशीलता और आनंद में वृद्धि के कारण यह जाता है।'
-              ].map((benefit, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <CheckCheck className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                  <p className="text-gray-700">{benefit}</p>
+            <div className="space-y-6 bg-gray-50 p-6 rounded-lg">
+              <div className="border-l-4 border-red-500 pl-4">
+                <h3 className="font-bold text-red-600 mb-2">पहला सप्ताह — शुरुआती परिस्थिति</h3>
+                <p className="text-gray-700">
+                  प्रोस्टेट सूजन शुरू होता है। रक्त प्रवाह बेहतर हो जाता है, ताजगी और स्फूर्ति महसूस होती है। मूत्र प्रवाह में सुधार देखने को मिलता है और मानसिक स्तर पर आत्मविश्वास बढ़ने के बारे में संकेत हैं। एंड प्रोस्टेट होता है, और उससे बेहतर।
+                </p>
+              </div>
+
+              <div className="border-l-4 border-orange-500 pl-4">
+                <h3 className="font-bold text-orange-600 mb-2">दूसरा सप्ताह — आरंभिक सुधार</h3>
+                <p className="text-gray-700">
+                  उम्मीद के मुताबिक मूत्र प्रवाह बेहतर हो जाता है। बिना दर्द अनुभव होने के बाद हो जाता है, और मुख्य प्रोस्टेट में वृद्धि होती है। मूत्रिशाव लंबे समय तक बायप्रोडक्ट अंदर हो जाता है, और शुक्राणु उत्पादन के लिए वज़न सामान्य हो जाता है।
+                </p>
+              </div>
+
+              <div className="border-l-4 border-pink-500 pl-4">
+                <h3 className="font-bold text-pink-600 mb-2">तीसरा सप्ताह — परिणामों का सुदृढ़ीकरण</h3>
+                <p className="text-gray-700">
+                  प्रोस्टेटाइटिस का रोग मिटना शुरू हो जाता है। मानसिक स्तर और अनुभविकता बढ़ जाती है। प्रोस्टेट प्रदाह होने लगता है। सहनशीलता पर निर्भर बढ़ता है, बालरूटिन को नियंत्रित करता है, और प्राथमिक लक्षणों से जल्दी आराम मिलता है।
+                </p>
+              </div>
+
+              <div className="border-l-4 border-purple-500 pl-4">
+                <h3 className="font-bold text-purple-600 mb-2">चौथा सप्ताह — अंतिम परिणाम</h3>
+                <p className="text-gray-700">
+                  प्रोस्टेट संक्रमण पूरी तरह संतुलित हो जाता है। और संभोग सामर्थ्य बढ़ जाता है।
+                </p>
+              </div>
+
+              {/* Graph */}
+              <div className="mt-8 bg-white  rounded-lg shadow">
+                <div className="h-64 bg-gradient-to-tr from-pink-100 via-pink-200 to-pink-400 rounded relative overflow-hidden">
+                  <img
+                    src={Graph}
+                    alt="Graph"
+                    className="absolute inset-0 w-full h-full "
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it Works */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-2xl font-bold mb-8 text-center">उत्पाद कैसे काम करता है Testro Booster</h2>
-          
-          <div className="space-y-6 bg-gray-50 p-6 rounded-lg">
-            <div className="border-l-4 border-red-500 pl-4">
-              <h3 className="font-bold text-red-600 mb-2">पहला सप्ताह — शुरुआती परिस्थिति</h3>
-              <p className="text-gray-700">
-                प्रोस्टेट सूजन शुरू होता है। रक्त प्रवाह बेहतर हो जाता है, ताजगी और स्फूर्ति महसूस होती है। मूत्र प्रवाह में सुधार देखने को मिलता है और मानसिक स्तर पर आत्मविश्वास बढ़ने के बारे में संकेत हैं। एंड प्रोस्टेट होता है, और उससे बेहतर।
-              </p>
-            </div>
-
-            <div className="border-l-4 border-orange-500 pl-4">
-              <h3 className="font-bold text-orange-600 mb-2">दूसरा सप्ताह — आरंभिक सुधार</h3>
-              <p className="text-gray-700">
-                उम्मीद के मुताबिक मूत्र प्रवाह बेहतर हो जाता है। बिना दर्द अनुभव होने के बाद हो जाता है, और मुख्य प्रोस्टेट में वृद्धि होती है। मूत्रिशाव लंबे समय तक बायप्रोडक्ट अंदर हो जाता है, और शुक्राणु उत्पादन के लिए वज़न सामान्य हो जाता है।
-              </p>
-            </div>
-
-            <div className="border-l-4 border-pink-500 pl-4">
-              <h3 className="font-bold text-pink-600 mb-2">तीसरा सप्ताह — परिणामों का सुदृढ़ीकरण</h3>
-              <p className="text-gray-700">
-                प्रोस्टेटाइटिस का रोग मिटना शुरू हो जाता है। मानसिक स्तर और अनुभविकता बढ़ जाती है। प्रोस्टेट प्रदाह होने लगता है। सहनशीलता पर निर्भर बढ़ता है, बालरूटिन को नियंत्रित करता है, और प्राथमिक लक्षणों से जल्दी आराम मिलता है।
-              </p>
-            </div>
-
-            <div className="border-l-4 border-purple-500 pl-4">
-              <h3 className="font-bold text-purple-600 mb-2">चौथा सप्ताह — अंतिम परिणाम</h3>
-              <p className="text-gray-700">
-                प्रोस्टेट संक्रमण पूरी तरह संतुलित हो जाता है। और संभोग सामर्थ्य बढ़ जाता है।
-              </p>
-            </div>
-
-            {/* Graph */}
-         <div className="mt-8 bg-white  rounded-lg shadow">
-  <div className="h-64 bg-gradient-to-tr from-pink-100 via-pink-200 to-pink-400 rounded relative overflow-hidden">
-    <img
-      src={Graph}
-      alt="Graph"
-      className="absolute inset-0 w-full h-full "
-    />
-  </div>
-</div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Doctor Video Section */}
-      <section className="py-12 bg-gray-100">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-            <p className="text-gray-700 mb-6">
-              इसलिए, यहां तक कि लिबिडेक्स देने सामान्य करने के बाद भी, अस्थायी स्पर्म दूसरी ही मजबूत और सिल्दि रहेगा। यह कंबाइंड में प्रीडेमी का खतरा है... और सभी महिलाओं को भी, है ना?
-            </p>
-
-            <div className="bg-gray-200 rounded-lg p-8 mb-6 aspect-video flex items-center justify-center">
-              <div className="text-center">
-               <img src={DocterThird} alt="" />
               </div>
             </div>
-
-            <p className="text-gray-700 font-bold">
-              "तो सभी उम्र के पुरुष अक्सर मुझसे पूछते हैं कि क्या अब भी बेहतर, मानसिक, और सिल्दर लिंग के साथ अच्छी शक्ति प्राप्त कर सकते हैं। मेरा उत्तर है, निश्चित रूप से हां।"
-            </p>
           </div>
+        </section>
 
-          <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg">
-            <p className="text-gray-700 mb-4">
-              मुझ पर भरोसा करें, इस उम्र में, एक पुरुष के लिए नियमित रूप से संभोग करना सामान्य है। इसके अलावा, यहां तक कि अगर आपकी उम्र 60 से अधिक है, तो भी आप <span className="font-bold">Testro Booster</span> के साथ अपनी शक्ति आसानी से वृद्धि कर सकते हैं।
-            </p>
-          </div>
-        </div>
-      </section>
+        {/* Doctor Video Section */}
+        <section className="py-12 bg-gray-100">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+              <p className="text-gray-700 mb-6">
+                इसलिए, यहां तक कि लिबिडेक्स देने सामान्य करने के बाद भी, अस्थायी स्पर्म दूसरी ही मजबूत और सिल्दि रहेगा। यह कंबाइंड में प्रीडेमी का खतरा है... और सभी महिलाओं को भी, है ना?
+              </p>
 
-      {/* How to Take Section */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="bg-gray-50 p-6 rounded-lg mb-8">
-            <p className="text-gray-700 mb-4">
-              <span className="font-bold">Testro Booster</span> की सहायता से, अब भी किसी भी नरकारिक स्वास्थ्य के कार्य में सुधार के लिए दुरुस्त तरीके से हुर्सुनें हो सकती है (ताज, इसके इस्तेमाल से हानि मेरे में बराक नहीं निकली)। लेकिन उसमें मैं स्पष्ट मतलब विन्यास करता हूं, लेकिन इसे मैं <span className="font-bold">Testro Booster</span> भी कहता हूं।
-            </p>
+              <div className="bg-gray-200 rounded-lg p-8 mb-6 aspect-video flex items-center justify-center">
+                <div className="text-center">
+                  <img src={DocterThird} alt="" />
+                </div>
+              </div>
 
-            <p className="text-gray-700 mb-4">
-              <span className="font-bold">Testro Booster</span> का एक और महत्वपूर्ण लाभ है कि कैप्सूल न केवल प्राकृतिक प्रोस्टेट दवाओं से भरा है जो शक्ति का पुनर्स्थापन करती हैं, बल्कि प्रोस्टेटाइटिस की सबसे अच्छी दवाइयों में से है। यह सच है कि बहुत कुछ इसे लोग नहीं जानते हैं और यह महत्वपूर्ण नहीं समझते हैं कि यह हर सुयोग के शारीरिक और भावनात्मक स्वास्थ्य के लिए कितना महत्वपूर्ण है।
-            </p>
+              <p className="text-gray-700 font-bold">
+                "तो सभी उम्र के पुरुष अक्सर मुझसे पूछते हैं कि क्या अब भी बेहतर, मानसिक, और सिल्दर लिंग के साथ अच्छी शक्ति प्राप्त कर सकते हैं। मेरा उत्तर है, निश्चित रूप से हां।"
+              </p>
+            </div>
 
-            <p className="text-gray-700">
-              समाज करते हुए, मैं सभी पुरुषों को सचेत करना चाहता हूं कि उनकी शक्ति उनकी पहचान है। मैं संदेह नहीं करता, खासकर कि उम्र के साथ यदि आपको पहले निर्भरता और गुणवत्तापूर्ण संभोग नहीं है, तो अपने भविष्य को कोताही बोल सोचिए हैं। क्यों इसे हमेशा बीमार होना चाहिए?
-            </p>
-          </div>
-
-          <div className="bg-green-50 border-2 border-green-400 p-6 rounded-lg">
-            <h3 className="text-xl font-bold mb-6">आपके पौरुष स्वास्थ्य का ध्यान रखें, कृपया और नहीं बल्कि आज ही! आपकी सहायता कर सकता है:</h3>
-
-            <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+            <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg">
               <p className="text-gray-700 mb-4">
-                <span className="font-bold">ध्यान दें</span> विशेष रूप से हमारे पाठकों के लिए, हमने ऑर्डर किए हैं। एक्सक्लूसिव ऑफर में <span className="font-bold text-blue-600">Testro Booster</span> यहां ऑर्डर करें, आपको गुणवत्तापूर्ण उत्पाद मिलेगा। निश्चित प्रमाण लिखित है, तैयार!
-              </p>
-
-              <p className="text-gray-700">
-                50% की छूट के साथ सीमित प्रोमोशन के दौरान <span className="font-bold text-blue-600">Testro Booster</span> पाएं। प्रोमोशनल पैकेज की संख्या सीमित है, जल्दी करें!
+                मुझ पर भरोसा करें, इस उम्र में, एक पुरुष के लिए नियमित रूप से संभोग करना सामान्य है। इसके अलावा, यहां तक कि अगर आपकी उम्र 60 से अधिक है, तो भी आप <span className="font-bold">Testro Booster</span> के साथ अपनी शक्ति आसानी से वृद्धि कर सकते हैं।
               </p>
             </div>
-
-            <div className="text-center">
-  <div className="bg-gray-200 h-40 rounded-lg mb-4 overflow-hidden">
-    <img
-      src={SecondImag}
-      alt="Libidex Product"
-      className="w-full h-full object-contain"
-    />
-  </div>
-
-  <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-lg w-full md:w-auto">
-    अभी ऑर्डर करें ₹2490 में!
-  </button>
-</div>
-
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Usage Instructions */}
-      <section className="py-12 bg-gray-100">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg">
-            <h3 className="text-2xl font-bold mb-6 text-center">Testro Booster कैसे लेना चाहिए?</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl font-bold">
-                  1
-                </div>
-                <p className="text-gray-700">1 कैप्सूल सुबह और शाम के समय लें।</p>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl font-bold">
-                  2
-                </div>
-                <p className="text-gray-700">इसे दिन में 1-2 बार लें।</p>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl font-bold">
-                  3
-                </div>
-                <p className="text-gray-700">न्यूनतम उपचार पाठ्यक्रम: <span className="font-bold">30 दिन।</span></p>
-              </div>
-            </div>
-
-            <div className="mt-8 bg-white p-6 rounded-lg">
+        {/* How to Take Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="bg-gray-50 p-6 rounded-lg mb-8">
               <p className="text-gray-700 mb-4">
-                यह महत्वपूर्ण है कि <span className="font-bold text-blue-600">Testro Booster</span> प्रभावी तरीके से शारीरिक रोग (स्पर्म दोष) और उन दोषों के साथ-साथ उन लोगों के लिए भी प्रभावी है जिनके मनोवैज्ञानिक समस्याएं हैं (अनमेधा, संबंधी मुद्दों की वजह से, अनुभव की कमी, अवसाद)।
+                <span className="font-bold">Testro Booster</span> की सहायता से, अब भी किसी भी नरकारिक स्वास्थ्य के कार्य में सुधार के लिए दुरुस्त तरीके से हुर्सुनें हो सकती है (ताज, इसके इस्तेमाल से हानि मेरे में बराक नहीं निकली)। लेकिन उसमें मैं स्पष्ट मतलब विन्यास करता हूं, लेकिन इसे मैं <span className="font-bold">Testro Booster</span> भी कहता हूं।
               </p>
 
-              <p className="text-gray-700">
+              <p className="text-gray-700 mb-4">
                 <span className="font-bold">Testro Booster</span> का एक और महत्वपूर्ण लाभ है कि कैप्सूल न केवल प्राकृतिक प्रोस्टेट दवाओं से भरा है जो शक्ति का पुनर्स्थापन करती हैं, बल्कि प्रोस्टेटाइटिस की सबसे अच्छी दवाइयों में से है। यह सच है कि बहुत कुछ इसे लोग नहीं जानते हैं और यह महत्वपूर्ण नहीं समझते हैं कि यह हर सुयोग के शारीरिक और भावनात्मक स्वास्थ्य के लिए कितना महत्वपूर्ण है।
               </p>
+
+              <p className="text-gray-700">
+                समाज करते हुए, मैं सभी पुरुषों को सचेत करना चाहता हूं कि उनकी शक्ति उनकी पहचान है। मैं संदेह नहीं करता, खासकर कि उम्र के साथ यदि आपको पहले निर्भरता और गुणवत्तापूर्ण संभोग नहीं है, तो अपने भविष्य को कोताही बोल सोचिए हैं। क्यों इसे हमेशा बीमार होना चाहिए?
+              </p>
             </div>
-          </div>
 
-          <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
-            <p className="text-gray-700 mb-4">
-              समाज करते हुए, मैं सभी पुरुषों को सचेत करना चाहता हूं कि उनकी शक्ति उनकी पहचान है। मैं संदेह नहीं करता, खासकर कि उम्र के साथ। यदि आपको पहले निर्भरता और गुणवत्तापूर्ण संभोग नहीं है, तो अपने भविष्य को कोताही बोल सोचिए हैं। और दूसरों की दोस्ती का हमेशा ध्यान रख सकते हैं। अंधे लिबर्टी के कैरेक्टर पे सोचिए हैं। लेकिन कुछ दोस्तों को बीमार होना चाहिए?
-            </p>
+            <div className="bg-green-50 border-2 border-green-400 p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-6">आपके पौरुष स्वास्थ्य का ध्यान रखें, कृपया और नहीं बल्कि आज ही! आपकी सहायता कर सकता है:</h3>
 
-            <p className="text-gray-700">
-              यह 100% प्राकृतिक सामग्री से बनी कैप्सूल है: फॉस्फोरस हृदयवर्धक मस्कुलर का अर्क, विटामिन सी हर्ब मिश्रण पथ्या का अर्क, जिंजर, प्रोएंथोसायनिडिन, एल-कार्निटिन, टोकोफेरोल, साथ ही पुरुषों के स्वास्थ्य के लिए उपयोगी विटामिन और खनिज सल्फर की एक बड़ी श्रृंखला।
-            </p>
-          </div>
-        </div>
-      </section>
+              <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <p className="text-gray-700 mb-4">
+                  <span className="font-bold">ध्यान दें</span> विशेष रूप से हमारे पाठकों के लिए, हमने ऑर्डर किए हैं। एक्सक्लूसिव ऑफर में <span className="font-bold text-blue-600">Testro Booster</span> यहां ऑर्डर करें, आपको गुणवत्तापूर्ण उत्पाद मिलेगा। निश्चित प्रमाण लिखित है, तैयार!
+                </p>
 
-      {/* Certifications */}
-  <section className="py-12 bg-white">
-  <div className="container mx-auto px-4 max-w-4xl">
+                <p className="text-gray-700">
+                  50% की छूट के साथ सीमित प्रोमोशन के दौरान <span className="font-bold text-blue-600">Testro Booster</span> पाएं। प्रोमोशनल पैकेज की संख्या सीमित है, जल्दी करें!
+                </p>
+              </div>
 
-    <div className="bg-blue-50 p-6 rounded-lg mb-8">
-      <p className="text-gray-700 mb-4">
-        <span className="font-bold text-blue-600">Testro Booster</span>{" "}
-        एक पेटेंटेड प्रोडक्ट है और इसके प्रयोग के लिए सरकारी स्वीकृति है,
-        जिससे प्रोस्टेटाइटिस के निदान उपचार की गुणवत्ता करने वाले पेशेवरों
-        को शांति मिलती है।
-      </p>
-
-      <div className="grid md:grid-cols-2 gap-6">
-
-        {/* Certificate 1 */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
-            <img
-              src={Cerficate}
-              alt="CE Certificate"
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <p className="text-center text-sm text-gray-600">
-            European Certification/ Quality Certification
-          </p>
-        </div>
-
-        {/* Certificate 2 */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
-            <img
-              src={ProductImage}
-              alt="CE Certificate"
-              className="w-full h-full object-contain"
-            />
-          </div>
-          
-        </div>
-
-      </div>
-    </div>
-
-    <div className="bg-gray-50 p-6 rounded-lg">
-      <p className="text-gray-700">
-        <span className="font-bold text-blue-600">Testro Booster</span>{" "}
-        मान्यता प्राप्त है। लेकिन, प्रयोग के निर्देशों के अनुसार, कैप्सूल कुरियर के लिए
-        पूरी तरह से सुरक्षित है और न केवल एक तात्कालिक प्रभाव प्रदान करता
-        है, बल्कि दीर्घकालिक समय के लिए भी वैज्ञानिक प्रभाव प्रदान करता है।
-      </p>
-    </div>
-
-  </div>
-</section>
-<div className="flex justify-center gap-4 my-4">
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
-                      {formatNum(timeLeft.hours)}
-                    </div>
-                    <span className="text-[10px] uppercase text-gray-500 font-bold">घंटे</span>
-                  </div>
-                  <div className="text-2xl font-bold text-blue-900 mt-2">:</div>
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
-                      {formatNum(timeLeft.minutes)}
-                    </div>
-                    <span className="text-[10px] uppercase text-gray-500 font-bold">मिनट</span>
-                  </div>
-                  <div className="text-2xl font-bold text-blue-900 mt-2">:</div>
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
-                      {formatNum(timeLeft.seconds)}
-                    </div>
-                    <span className="text-[10px] uppercase text-gray-500 font-bold">सेकंड</span>
-                  </div>
+              <div className="text-center">
+                <div className="bg-gray-200 h-40 rounded-lg mb-4 overflow-hidden">
+                  <img
+                    src={SecondImag}
+                    alt="Libidex Product"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
 
-      {/* Final CTA */}
-   <section className="py-16 bg-gradient-to-b from-orange-100 to-orange-200">
-  <div className="container mx-auto px-4 max-w-4xl text-center">
-    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-      अभी ऑर्डर करें और 50% की छूट पाएं!
-    </h2>
+                <div className="space-y-3">
+                  <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-lg w-full md:w-auto">
+                    अभी ऑर्डर करें ₹2490 में!
+                  </button>
+                  
+                  <button
+                    onClick={handleOrderViaWhatsApp}
+                    className="flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full text-lg w-full md:w-auto"
+                  >
+                    <FaWhatsapp className="w-6 h-6" />
+                    WhatsApp पर ऑर्डर करें
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <div className="bg-white p-8 rounded-lg shadow-2xl max-w-md mx-auto">
+        {/* Usage Instructions */}
+        <section className="py-12 bg-gray-100">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="bg-yellow-50 border-2 border-yellow-400 p-6 rounded-lg">
+              <h3 className="text-2xl font-bold mb-6 text-center">Testro Booster कैसे लेना चाहिए?</h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl font-bold">
+                    1
+                  </div>
+                  <p className="text-gray-700">1 कैप्सूल सुबह और शाम के समय लें।</p>
+                </div>
 
-      {/* IMAGE FIXED HERE */}
-      <div className="bg-gray-200 h-44 rounded-lg mb-6 overflow-hidden">
-        <img
-          src={FirstImag}
-          alt="Libidex Product"
-          className="w-full h-full object-contain"
-        />
-      </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl font-bold">
+                    2
+                  </div>
+                  <p className="text-gray-700">इसे दिन में 1-2 बार लें।</p>
+                </div>
 
-      <p className="text-2xl font-bold text-gray-900 mb-2">विशेष मूल्य</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl font-bold">
+                    3
+                  </div>
+                  <p className="text-gray-700">न्यूनतम उपचार पाठ्यक्रम: <span className="font-bold">30 दिन।</span></p>
+                </div>
+              </div>
 
-      <div className="mb-6">
-        <span className="text-4xl font-bold text-orange-600">₹2490</span>
-        <span className="text-xl text-gray-500 line-through ml-3">₹4980</span>
-      </div>
+              <div className="mt-8 bg-white p-6 rounded-lg">
+                <p className="text-gray-700 mb-4">
+                  यह महत्वपूर्ण है कि <span className="font-bold text-blue-600">Testro Booster</span> प्रभावी तरीके से शारीरिक रोग (स्पर्म दोष) और उन दोषों के साथ-साथ उन लोगों के लिए भी प्रभावी है जिनके मनोवैज्ञानिक समस्याएं हैं (अनमेधा, संबंधी मुद्दों की वजह से, अनुभव की कमी, अवसाद)।
+                </p>
 
-      <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-xl w-full transform transition hover:scale-105">
-        अभी ऑर्डर करें!
-      </button>
+                <p className="text-gray-700">
+                  <span className="font-bold">Testro Booster</span> का एक और महत्वपूर्ण लाभ है कि कैप्सूल न केवल प्राकृतिक प्रोस्टेट दवाओं से भरा है जो शक्ति का पुनर्स्थापन करती हैं, बल्कि प्रोस्टेटाइटिस की सबसे अच्छी दवाइयों में से है। यह सच है कि बहुत कुछ इसे लोग नहीं जानते हैं और यह महत्वपूर्ण नहीं समझते हैं कि यह हर सुयोग के शारीरिक और भावनात्मक स्वास्थ्य के लिए कितना महत्वपूर्ण है।
+                </p>
+              </div>
+            </div>
 
-      <p className="text-sm text-gray-600 mt-4">
-        ⏰ ऑफर  {new Date().toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  })}{" "} तक वैध है
-      </p>
-    </div>
+            <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
+              <p className="text-gray-700 mb-4">
+                समाज करते हुए, मैं सभी पुरुषों को सचेत करना चाहता हूं कि उनकी शक्ति उनकी पहचान है। मैं संदेह नहीं करता, खासकर कि उम्र के साथ। यदि आपको पहले निर्भरता और गुणवत्तापूर्ण संभोग नहीं है, तो अपने भविष्य को कोताही बोल सोचिए हैं। और दूसरों की दोस्ती का हमेशा ध्यान रख सकते हैं। अंधे लिबर्टी के कैरेक्टर पे सोचिए हैं। लेकिन कुछ दोस्तों को बीमार होना चाहिए?
+              </p>
 
-    <div className="mt-8 text-gray-700">
-      <p className="mb-2">✓ 100% प्राकृतिक सामग्री</p>
-      <p className="mb-2">✓ कोई दुष्प्रभाव नहीं</p>
-      <p className="mb-2">✓ प्रमाणित और परीक्षित</p>
-      <p>✓ हजारों संतुष्ट ग्राहक</p>
-    </div>
-  </div>
-</section>
+              <p className="text-gray-700">
+                यह 100% प्राकृतिक सामग्री से बनी कैप्सूल है: फॉस्फोरस हृदयवर्धक मस्कुलर का अर्क, विटामिन सी हर्ब मिश्रण पथ्या का अर्क, जिंजर, प्रोएंथोसायनिडिन, एल-कार्निटिन, टोकोफेरोल, साथ ही पुरुषों के स्वास्थ्य के लिए उपयोगी विटामिन और खनिज सल्फर की एक बड़ी श्रृंखला।
+              </p>
+            </div>
+          </div>
+        </section>
 
-{/* Order Form Section */}
-<section className="py-12 bg-gradient-to-b from-gray-50 to-white">
-  <div className="container mx-auto px-4 max-w-4xl">
-    <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-      {/* Form Header */}
-      <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-          अभी ऑर्डर फॉर्म भरें
-        </h2>
-        <p className="text-blue-100">
-          सीमित समय की पेशकश - सिर्फ ₹2490 में पाएं Testro Booster
-        </p>
-      </div>
+        {/* Certifications */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="bg-blue-50 p-6 rounded-lg mb-8">
+              <p className="text-gray-700 mb-4">
+                <span className="font-bold text-blue-600">Testro Booster</span>{" "}
+                एक पेटेंटेड प्रोडक्ट है और इसके प्रयोग के लिए सरकारी स्वीकृति है,
+                जिससे प्रोस्टेटाइटिस के निदान उपचार की गुणवत्ता करने वाले पेशेवरों
+                को शांति मिलती है।
+              </p>
 
-      {/* Form Body */}
-      <div className="p-6 md:p-8">
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Left Column - Product & Timer */}
-          <div>
-            <div className="bg-gray-100 rounded-xl p-4 mb-6">
-              <div className="h-48 rounded-lg overflow-hidden mb-4">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Certificate 1 */}
+                <div className="bg-white p-4 rounded-lg shadow">
+                  <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
+                    <img
+                      src={Cerficate}
+                      alt="CE Certificate"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <p className="text-center text-sm text-gray-600">
+                    European Certification/ Quality Certification
+                  </p>
+                </div>
+
+                {/* Certificate 2 */}
+                <div className="bg-white p-4 rounded-lg shadow">
+                  <div className="h-48 bg-gray-200 rounded mb-3 overflow-hidden">
+                    <img
+                      src={ProductImage}
+                      alt="CE Certificate"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <p className="text-gray-700">
+                <span className="font-bold text-blue-600">Testro Booster</span>{" "}
+                मान्यता प्राप्त है। लेकिन, प्रयोग के निर्देशों के अनुसार, कैप्सूल कुरियर के लिए
+                पूरी तरह से सुरक्षित है और न केवल एक तात्कालिक प्रभाव प्रदान करता
+                है, बल्कि दीर्घकालिक समय के लिए भी वैज्ञानिक प्रभाव प्रदान करता है।
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Timer Section */}
+        <div className="flex justify-center gap-4 my-4">
+          <div className="text-center">
+            <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
+              {formatNum(timeLeft.hours)}
+            </div>
+            <span className="text-[10px] uppercase text-gray-500 font-bold">घंटे</span>
+          </div>
+          <div className="text-2xl font-bold text-blue-900 mt-2">:</div>
+          <div className="text-center">
+            <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
+              {formatNum(timeLeft.minutes)}
+            </div>
+            <span className="text-[10px] uppercase text-gray-500 font-bold">मिनट</span>
+          </div>
+          <div className="text-2xl font-bold text-blue-900 mt-2">:</div>
+          <div className="text-center">
+            <div className="w-14 h-14 rounded-full border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-blue-900">
+              {formatNum(timeLeft.seconds)}
+            </div>
+            <span className="text-[10px] uppercase text-gray-500 font-bold">सेकंड</span>
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <section className="py-16 bg-gradient-to-b from-orange-100 to-orange-200">
+          <div className="container mx-auto px-4 max-w-4xl text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              अभी ऑर्डर करें और 50% की छूट पाएं!
+            </h2>
+
+            <div className="bg-white p-8 rounded-lg shadow-2xl max-w-md mx-auto">
+              <div className="bg-gray-200 h-44 rounded-lg mb-6 overflow-hidden">
                 <img
                   src={FirstImag}
-                  alt="Testro Booster"
+                  alt="Libidex Product"
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div className="text-center">
-                <p className="text-lg font-bold text-gray-800 mb-2">
-                  Testro Booster
-                </p>
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <span className="text-3xl font-bold text-orange-600">
-                    ₹2,490
-                  </span>
-                  <span className="text-lg text-gray-500 line-through">
-                    ₹4,980
-                  </span>
-                  <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded-full">
-                    50% OFF
-                  </span>
-                </div>
-              </div>
-            </div>
 
-            {/* Timer */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
-              <p className="text-center font-bold text-gray-700 mb-3">
-                ⏰ ऑफर समाप्त होने में:
+              <p className="text-2xl font-bold text-gray-900 mb-2">विशेष मूल्य</p>
+
+              <div className="mb-6">
+                <span className="text-4xl font-bold text-orange-600">₹2490</span>
+                <span className="text-xl text-gray-500 line-through ml-3">₹4980</span>
+              </div>
+
+              <div className="space-y-3">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full text-xl w-full transform transition hover:scale-105">
+                  अभी ऑर्डर करें!
+                </button>
+                
+                <button
+                  onClick={handleOrderViaWhatsApp}
+                  className="flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full text-xl w-full transform transition hover:scale-105"
+                >
+                  <FaWhatsapp className="w-6 h-6" />
+                  WhatsApp पर ऑर्डर करें
+                </button>
+              </div>
+
+              <p className="text-sm text-gray-600 mt-4">
+                ⏰ ऑफर {new Date().toLocaleDateString("en-IN", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })} तक वैध है
               </p>
-              <div className="flex justify-center gap-3">
-                <div className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
-                    {formatNum(timeLeft.hours)}
-                  </div>
-                  <span className="text-xs text-gray-600 mt-1">घंटे</span>
-                </div>
-                <div className="text-xl font-bold text-blue-900 mt-3">:</div>
-                <div className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
-                    {formatNum(timeLeft.minutes)}
-                  </div>
-                  <span className="text-xs text-gray-600 mt-1">मिनट</span>
-                </div>
-                <div className="text-xl font-bold text-blue-900 mt-3">:</div>
-                <div className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
-                    {formatNum(timeLeft.seconds)}
-                  </div>
-                  <span className="text-xs text-gray-600 mt-1">सेकंड</span>
-                </div>
-              </div>
             </div>
 
-            {/* Benefits */}
-            <div className="space-y-2">
+            <div className="mt-8 text-gray-700">
+              <p className="mb-2">✓ 100% प्राकृतिक सामग्री</p>
+              <p className="mb-2">✓ कोई दुष्प्रभाव नहीं</p>
+              <p className="mb-2">✓ प्रमाणित और परीक्षित</p>
+              <p>✓ हजारों संतुष्ट ग्राहक</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Order Form Section */}
+        <section className="py-12 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+              {/* Form Header */}
+              <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  अभी ऑर्डर फॉर्म भरें
+                </h2>
+                <p className="text-blue-100">
+                  सीमित समय की पेशकश - सिर्फ ₹2490 में पाएं Testro Booster
+                </p>
+              </div>
+
+              {/* Form Body */}
+              <div className="p-6 md:p-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Left Column - Product & Timer */}
+                  <div>
+                    <div className="bg-gray-100 rounded-xl p-4 mb-6">
+                      <div className="h-48 rounded-lg overflow-hidden mb-4">
+                        <img
+                          src={FirstImag}
+                          alt="Testro Booster"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="text-center">
+                        <p className="text-lg font-bold text-gray-800 mb-2">
+                          Testro Booster
+                        </p>
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                          <span className="text-3xl font-bold text-orange-600">
+                            ₹2,490
+                          </span>
+                          <span className="text-lg text-gray-500 line-through">
+                            ₹4,980
+                          </span>
+                          <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded-full">
+                            50% OFF
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Timer */}
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+                      <p className="text-center font-bold text-gray-700 mb-3">
+                        ⏰ ऑफर समाप्त होने में:
+                      </p>
+                      <div className="flex justify-center gap-3">
+                        <div className="text-center">
+                          <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
+                            {formatNum(timeLeft.hours)}
+                          </div>
+                          <span className="text-xs text-gray-600 mt-1">घंटे</span>
+                        </div>
+                        <div className="text-xl font-bold text-blue-900 mt-3">:</div>
+                        <div className="text-center">
+                          <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
+                            {formatNum(timeLeft.minutes)}
+                          </div>
+                          <span className="text-xs text-gray-600 mt-1">मिनट</span>
+                        </div>
+                        <div className="text-xl font-bold text-blue-900 mt-3">:</div>
+                        <div className="text-center">
+                          <div className="w-12 h-12 rounded-full bg-white border-2 border-orange-400 flex items-center justify-center text-xl font-bold text-blue-900">
+                            {formatNum(timeLeft.seconds)}
+                          </div>
+                          <span className="text-xs text-gray-600 mt-1">सेकंड</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Benefits */}
+                    <div className="space-y-2">
+                      {[
+                        '✅ 100% प्राकृतिक सामग्री',
+                        '✅ कोई दुष्प्रभाव नहीं',
+                        '✅ डॉक्टर द्वारा अनुशंसित',
+                        '✅ सुरक्षित ऑनलाइन भुगतान',
+                        '✅ 7 दिन में डिलीवरी'
+                      ].map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm">
+                          <Check className="w-4 h-4 text-green-600" />
+                          <span className="text-gray-700">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right Column - Form */}
+                  <div>
+                    <form className="space-y-4" onSubmit={handleSubmit}>
+                      <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                          पूरा नाम *
+                        </label>
+                        <input
+                          type="text"
+                          name='FullName'
+                          value={formData.FullName}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="अपना पूरा नाम दर्ज करें"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                          मोबाइल नंबर *
+                        </label>
+                        <input
+                          type="tel"
+                          name='Mobile'
+                          value={formData.Mobile}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="10 अंकों का मोबाइल नंबर"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                          ईमेल
+                        </label>
+                        <input
+                          type="email"
+                          name='Email'
+                          value={formData.Email}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="अपना ईमेल पता"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                          पूरा पता *
+                        </label>
+                        <textarea
+                          required
+                          name='CompletedAddress'
+                          value={formData.CompletedAddress}
+                          onChange={handleChange}
+                          rows="3"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="घर नंबर, स्ट्रीट, शहर, पिन कोड"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-gray-700 text-sm font-bold mb-2">
+                            शहर *
+                          </label>
+                          <input
+                            type="text"
+                            name='City'
+                            value={formData.City}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="शहर"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-gray-700 text-sm font-bold mb-2">
+                            पिन कोड *
+                          </label>
+                          <input
+                            type="text"
+                            name='Pincode'
+                            value={formData.Pincode}
+                            onChange={handleChange}
+                            required
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="6 अंकों का पिन कोड"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Terms */}
+                      <div className="flex items-start gap-2">
+                        <input
+                          type="checkbox"
+                          required
+                          className="mt-1 text-blue-600"
+                        />
+                        <span className="text-xs text-gray-600">
+                          मैंने सभी नियमों और शर्तों को पढ़ लिया है और स्वीकार करता हूं। मुझे पता है कि यह उत्पाद चिकित्सा सलाह का विकल्प नहीं है और उपयोग से पहले अपने डॉक्टर से परामर्श करूंगा।
+                        </span>
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        type="submit"
+                        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <span>अभी ऑर्डर करें</span>
+                          <span className="text-sm bg-white text-orange-600 px-2 py-1 rounded-full">
+                            ₹2,490
+                          </span>
+                        </div>
+                        <div className="text-sm font-normal mt-1">
+                          मुफ्त शिपिंग • 7 दिन में डिलीवरी
+                        </div>
+                      </button>
+                    </form>
+
+                    {/* Trust Badges */}
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                      <div className="flex justify-center gap-4">
+                        <div className="text-center">
+                          <div className="w-10 h-10 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-1">
+                            <span className="text-green-600 font-bold">✓</span>
+                          </div>
+                          <span className="text-xs text-gray-600">सुरक्षित</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-1">
+                            <span className="text-blue-600 font-bold">🔒</span>
+                          </div>
+                          <span className="text-xs text-gray-600">गोपनीय</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-1">
+                            <span className="text-purple-600 font-bold">★</span>
+                          </div>
+                          <span className="text-xs text-gray-600">गुणवत्ता</span>
+                        </div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-1">
+                            <span className="text-red-600 font-bold">♥</span>
+                          </div>
+                          <span className="text-xs text-gray-600">भरोसेमंद</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Form Footer */}
+              <div className="bg-gray-50 p-4 text-center border-t">
+                <p className="text-xs text-gray-600">
+                  📞 कोई प्रश्न है? हमें कॉल करें: <span className="font-bold">1800-123-4567</span> (सुबह 9 बजे से रात 9 बजे तक)
+                </p>
+                <p className="text-xs text-gray-600 mt-1">
+                  📱 या WhatsApp करें: <span className="font-bold">+91 98765 43210</span>
+                </p>
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="mt-2 inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                >
+                  <FaWhatsapp className="w-4 h-4" />
+                  WhatsApp पर अभी बात करें
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Customer Reviews Section */}
+        <section className="py-12 bg-white border-t">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
+              <span className="text-blue-600">💬</span> ग्राहक समीक्षाएं ({new Date().getFullYear()})
+            </h3>
+
+            <div className="space-y-6">
               {[
-                '✅ 100% प्राकृतिक सामग्री',
-                '✅ कोई दुष्प्रभाव नहीं',
-                '✅ डॉक्टर द्वारा अनुशंसित',
-                '✅ सुरक्षित ऑनलाइन भुगतान',
-                '✅ 7 दिन में डिलीवरी'
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-sm">
-                  <Check className="w-4 h-4 text-green-600" />
-                  <span className="text-gray-700">{item}</span>
+                { name: "राजेश खन्ना", text: "मैंने इसे 2 हफ्ते पहले शुरू किया था, अब मुझे रात में बार-बार बाथरूम नहीं जाना पड़ता। बहुत आराम है।", city: "दिल्ली" },
+                { name: "सुनील वर्मा", text: "बढ़िया उत्पाद है। डिलीवरी बहुत तेज़ थी और पैकेजिंग भी सुरक्षित थी। धन्यवाद बायर टीम!", city: "मुंबई" },
+                { name: "अमित त्यागी", text: "क्या यह 60 साल की उम्र में काम करेगा? मैंने ऑर्डर किया है, देखते हैं।", city: "मेरठ" },
+                { name: "डॉ. विकास (Verified)", text: "एक डॉक्टर के रूप में, मैं इसकी प्राकृतिक संरचना की सराहना करता हूँ। इसके कोई साइड इफेक्ट नहीं हैं।", city: "बेंगलुरु" },
+                { name: "संजय अरोड़ा", text: "30 दिन का कोर्स पूरा किया। एनर्जी लेवल में बहुत सुधार महसूस हो रहा है।", city: "चंडीगढ़" },
+                { name: "विजय यादव", text: "कीमत थोड़ी ज्यादा लग रही थी, लेकिन रिजल्ट देखने के बाद लगता है कि पैसा वसूल है।", city: "लखनऊ" },
+                { name: "महेश बिश्नोई", text: "ऑर्डर करने के 3 दिन बाद मुझे मिल गया। आज से शुरू कर रहा हूँ।", city: "जयपुर" },
+                { name: "राहुल देशपांडे", text: "प्रोस्टेट की सूजन काफी कम हो गई है। पेशाब में जलन भी बंद हो गई है।", city: "पुणे" },
+                { name: "अनिल कुंबले", text: "क्या मुझे इसके साथ कोई खास डाइट लेनी होगी? कॉल पर डॉक्टर ने बहुत अच्छे से समझाया।", city: "मैसूर" },
+                { name: "सुरेश रैना", text: "50% की छूट सच में काम कर गई। मुझे 2490 में ही मिला।", city: "गाजियाबाद" },
+                { name: "दिनेश कार्तिक", text: "शादीशुदा जिंदगी में काफी सुधार आया है। आत्मविश्वास बढ़ गया है।", city: "चेन्नई" },
+                { name: "मनोज तिवारी", text: "मैंने इसे अपने पिता के लिए मंगवाया था। उन्हें अब काफी राहत है।", city: "पटना" },
+                { name: "विक्रम राठौड़", text: "शानदार जड़ी-बूटियों का मिश्रण है। पूरी तरह प्राकृतिक!", city: "इंदौर" },
+                { name: "अशोक गहलोत", text: "शुरुआत में मुझे यकीन नहीं था, लेकिन 10 दिन बाद परिणाम दिखने लगे।", city: "जोधपुर" },
+                { name: "समीर शेख", text: "बहुत ही अच्छा अनुभव रहा। कस्टमर सपोर्ट टीम बहुत मददगार है।", city: "हैदराबाद" },
+                { name: "रवि शास्त्री", text: "पेशाब का प्रवाह अब सामान्य हो गया है। बहुत संतुष्ट हूँ।", city: "रांची" },
+                { name: "जसप्रीत बुमराह", text: "पूरी तरह सुरक्षित महसूस होता है। कोई घबराहट या साइड इफेक्ट नहीं।", city: "अहमदाबाद" },
+                { name: "केएल राहुल", text: "पैकेजिंग बहुत अच्छी है, किसी को पता नहीं चलता अंदर क्या है। प्राइवेसी के लिए 10/10।", city: "बेंगलुरु" },
+                { name: "ईशान किशन", text: "मेरे दोस्त ने इसे रिकमेंड किया था। उसने कहा था कि यह बेस्ट है।", city: "पटना" },
+                { name: "हार्दिक पांड्या", text: "बढ़िया क्वालिटी! बायर का नाम ही काफी है भरोसे के लिए।", city: "बड़ौदा" }
+              ].map((comment, index) => (
+                <div key={index} className="bg-gray-50 p-4 rounded-lg border-b border-gray-200">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="font-bold text-blue-900">{comment.name} <span className="text-green-600 text-[10px] ml-2">● Verified Buyer</span></h4>
+                    <span className="text-xs text-gray-400">{comment.city}</span>
+                  </div>
+                  <p className="text-gray-700 text-sm leading-relaxed">"{comment.text}"</p>
+                  <div className="flex gap-1 mt-2 text-yellow-500 text-xs">
+                    {"★".repeat(5)}
+                  </div>
                 </div>
               ))}
             </div>
+
+            <div className="mt-8 text-center">
+              <button className="text-blue-600 font-bold hover:underline">और कमेंट्स देखें...</button>
+            </div>
           </div>
+        </section>
 
-          {/* Right Column - Form */}
-          <div>
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  पूरा नाम *
-                </label>
-                <input
-                  type="text"
-                  name='FullName'
-                  value={formData.FullName}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="अपना पूरा नाम दर्ज करें"
-                />
+        {/* Footer */}
+        <footer className="bg-blue-900 text-white py-8">
+          <div className="container mx-auto px-4 text-center">
+            <div className="mb-4">
+              <div className="inline-block w-16 h-16 bg-white rounded-full flex items-center justify-center">
+                <span className="text-blue-900 font-bold">BAYER</span>
               </div>
-
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  मोबाइल नंबर *
-                </label>
-                <input
-                  type="tel"
-                  name='Mobile'
-                  value={formData.Mobile}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="10 अंकों का मोबाइल नंबर"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  ईमेल
-                </label>
-                <input
-                  type="email"
-                  name='Email'
-                  value={formData.Email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="अपना ईमेल पता"
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  पूरा पता *
-                </label>
-                <textarea
-                  required
-                  name='CompletedAddress'
-                  value={formData.CompletedAddress}
-                  onChange={handleChange}
-                  rows="3"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="घर नंबर, स्ट्रीट, शहर, पिन कोड"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    शहर *
-                  </label>
-                  <input
-                    type="text"
-                    name='City'
-                    value={formData.City}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="शहर"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    पिन कोड *
-                  </label>
-                  <input
-                    type="text"
-                    name='Pincode'
-                    value={formData.Pincode}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="6 अंकों का पिन कोड"
-                  />
-                </div>
-              </div>
-
-              {/* Terms */}
-              <div className="flex items-start gap-2">
-                <input
-                  type="checkbox"
-                  required
-                  className="mt-1 text-blue-600"
-                />
-                <span className="text-xs text-gray-600">
-                  मैंने सभी नियमों और शर्तों को पढ़ लिया है और स्वीकार करता हूं। मुझे पता है कि यह उत्पाद चिकित्सा सलाह का विकल्प नहीं है और उपयोग से पहले अपने डॉक्टर से परामर्श करूंगा।
-                </span>
-              </div>
-
-              {/* Submit Button */}
+            </div>
+            
+            <div className="mb-4">
               <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                onClick={handleWhatsAppClick}
+                className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors"
               >
-                <div className="flex items-center justify-center gap-2" >
-                  <span>अभी ऑर्डर करें</span>
-                  <span className="text-sm bg-white text-orange-600 px-2 py-1 rounded-full">
-                    ₹2,490
-                  </span>
-                </div>
-                <div className="text-sm font-normal mt-1">
-                  मुफ्त शिपिंग • 7 दिन में डिलीवरी
-                </div>
+                <FaWhatsapp className="w-5 h-5" />
+                WhatsApp पर संपर्क करें
               </button>
-            </form>
-
-            {/* Trust Badges */}
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <div className="flex justify-center gap-4">
-                <div className="text-center">
-                  <div className="w-10 h-10 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-1">
-                    <span className="text-green-600 font-bold">✓</span>
-                  </div>
-                  <span className="text-xs text-gray-600">सुरक्षित</span>
-                </div>
-                <div className="text-center">
-                  <div className="w-10 h-10 mx-auto bg-blue-100 rounded-full flex items-center justify-center mb-1">
-                    <span className="text-blue-600 font-bold">🔒</span>
-                  </div>
-                  <span className="text-xs text-gray-600">गोपनीय</span>
-                </div>
-                <div className="text-center">
-                  <div className="w-10 h-10 mx-auto bg-purple-100 rounded-full flex items-center justify-center mb-1">
-                    <span className="text-purple-600 font-bold">★</span>
-                  </div>
-                  <span className="text-xs text-gray-600">गुणवत्ता</span>
-                </div>
-                <div className="text-center">
-                  <div className="w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-1">
-                    <span className="text-red-600 font-bold">♥</span>
-                  </div>
-                  <span className="text-xs text-gray-600">भरोसेमंद</span>
-                </div>
-              </div>
             </div>
+            
+            <p className="text-sm opacity-80">© 2025 Bayer India. All rights reserved.</p>
+            <p className="text-xs opacity-60 mt-2">
+              यह उत्पाद चिकित्सा सलायी का विकल्प नहीं है। उपयोग से पहले अपने चिकित्सक से परामर्श करें।
+            </p>
+            <p className="text-xs opacity-60 mt-2">
+              WhatsApp: +91 98765 43210 | Call: 1800-123-4567
+            </p>
           </div>
-        </div>
+        </footer>
       </div>
-
-      {/* Form Footer */}
-      <div className="bg-gray-50 p-4 text-center border-t">
-        <p className="text-xs text-gray-600">
-          📞 कोई प्रश्न है? हमें कॉल करें: <span className="font-bold">1800-123-4567</span> (सुबह 9 बजे से रात 9 बजे तक)
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-{/* Customer Reviews Section */}
-      <section className="py-12 bg-white border-t">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
-            <span className="text-blue-600">💬</span> ग्राहक समीक्षाएं ({new Date().getFullYear()})
-          </h3>
-
-          <div className="space-y-6">
-            {[
-              { name: "राजेश खन्ना", text: "मैंने इसे 2 हफ्ते पहले शुरू किया था, अब मुझे रात में बार-बार बाथरूम नहीं जाना पड़ता। बहुत आराम है।", city: "दिल्ली" },
-              { name: "सुनील वर्मा", text: "बढ़िया उत्पाद है। डिलीवरी बहुत तेज़ थी और पैकेजिंग भी सुरक्षित थी। धन्यवाद बायर टीम!", city: "मुंबई" },
-              { name: "अमित त्यागी", text: "क्या यह 60 साल की उम्र में काम करेगा? मैंने ऑर्डर किया है, देखते हैं।", city: "मेरठ" },
-              { name: "डॉ. विकास (Verified)", text: "एक डॉक्टर के रूप में, मैं इसकी प्राकृतिक संरचना की सराहना करता हूँ। इसके कोई साइड इफेक्ट नहीं हैं।", city: "बेंगलुरु" },
-              { name: "संजय अरोड़ा", text: "30 दिन का कोर्स पूरा किया। एनर्जी लेवल में बहुत सुधार महसूस हो रहा है।", city: "चंडीगढ़" },
-              { name: "विजय यादव", text: "कीमत थोड़ी ज्यादा लग रही थी, लेकिन रिजल्ट देखने के बाद लगता है कि पैसा वसूल है।", city: "लखनऊ" },
-              { name: "महेश बिश्नोई", text: "ऑर्डर करने के 3 दिन बाद मुझे मिल गया। आज से शुरू कर रहा हूँ।", city: "जयपुर" },
-              { name: "राहुल देशपांडे", text: "प्रोस्टेट की सूजन काफी कम हो गई है। पेशाब में जलन भी बंद हो गई है।", city: "पुणे" },
-              { name: "अनिल कुंबले", text: "क्या मुझे इसके साथ कोई खास डाइट लेनी होगी? कॉल पर डॉक्टर ने बहुत अच्छे से समझाया।", city: "मैसूर" },
-              { name: "सुरेश रैना", text: "50% की छूट सच में काम कर गई। मुझे 2490 में ही मिला।", city: "गाजियाबाद" },
-              { name: "दिनेश कार्तिक", text: "शादीशुदा जिंदगी में काफी सुधार आया है। आत्मविश्वास बढ़ गया है।", city: "चेन्नई" },
-              { name: "मनोज तिवारी", text: "मैंने इसे अपने पिता के लिए मंगवाया था। उन्हें अब काफी राहत है।", city: "पटना" },
-              { name: "विक्रम राठौड़", text: "शानदार जड़ी-बूटियों का मिश्रण है। पूरी तरह प्राकृतिक!", city: "इंदौर" },
-              { name: "अशोक गहलोत", text: "शुरुआत में मुझे यकीन नहीं था, लेकिन 10 दिन बाद परिणाम दिखने लगे।", city: "जोधपुर" },
-              { name: "समीर शेख", text: "बहुत ही अच्छा अनुभव रहा। कस्टमर सपोर्ट टीम बहुत मददगार है।", city: "हैदराबाद" },
-              { name: "रवि शास्त्री", text: "पेशाब का प्रवाह अब सामान्य हो गया है। बहुत संतुष्ट हूँ।", city: "रांची" },
-              { name: "जसप्रीत बुमराह", text: "पूरी तरह सुरक्षित महसूस होता है। कोई घबराहट या साइड इफेक्ट नहीं।", city: "अहमदाबाद" },
-              { name: "केएल राहुल", text: "पैकेजिंग बहुत अच्छी है, किसी को पता नहीं चलता अंदर क्या है। प्राइवेसी के लिए 10/10।", city: "बेंगलुरु" },
-              { name: "ईशान किशन", text: "मेरे दोस्त ने इसे रिकमेंड किया था। उसने कहा था कि यह बेस्ट है।", city: "पटना" },
-              { name: "हार्दिक पांड्या", text: "बढ़िया क्वालिटी! बायर का नाम ही काफी है भरोसे के लिए।", city: "बड़ौदा" }
-            ].map((comment, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg border-b border-gray-200">
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-bold text-blue-900">{comment.name} <span className="text-green-600 text-[10px] ml-2">● Verified Buyer</span></h4>
-                  <span className="text-xs text-gray-400">{comment.city}</span>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">"{comment.text}"</p>
-                <div className="flex gap-1 mt-2 text-yellow-500 text-xs">
-                  {"★".repeat(5)}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 text-center">
-            <button className="text-blue-600 font-bold hover:underline">और कमेंट्स देखें...</button>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-blue-900 text-white py-8">
-        <div className="container mx-auto px-4 text-center">
-          <div className="mb-4">
-            <div className="inline-block w-16 h-16 bg-white rounded-full flex items-center justify-center">
-              <span className="text-blue-900 font-bold">BAYER</span>
-            </div>
-          </div>
-          <p className="text-sm opacity-80">© 2025 Bayer India. All rights reserved.</p>
-          <p className="text-xs opacity-60 mt-2">यह उत्पाद चिकित्सा सलाह का विकल्प नहीं है। उपयोग से पहले अपने चिकित्सक से परामर्श करें।</p>
-        </div>
-      </footer>
-    </div>
-    <Toaster/>
-   </>
+      <Toaster />
+    </>
   );
 }
